@@ -6,6 +6,7 @@
 #include "ofxOsc.h"
 #include "Ball.hpp"
 #include "RectShape.hpp"
+#include "CircleShape.hpp"
 
 #define N_SOUNDS 5
 class SoundData {
@@ -65,10 +66,16 @@ class ofApp : public ofBaseApp{
     int midiNum[22] = {48,50,52,53,55,57,59,60,62,64,65,67,69,71,72,74,76,77,79,81,83,84};
     
     //落下の円
-    vector <shared_ptr<ofxBox2dCircle>> circles;
+//    vector <shared_ptr<ofxBox2dCircle>> circles;
+    vector <shared_ptr<CircleShape>> circles;
     vector <shared_ptr<RectShape>> rects;
     vector <shared_ptr<ofxBox2dPolygon>>  polies;
     
     ofSoundPlayer  sound[N_SOUNDS];
+
+    
+    ofColor *colors = new ofColor[3];
+
+    
     
 };

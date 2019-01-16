@@ -50,7 +50,7 @@ void Ball::updateBall(){
 
 void Ball::display(){
     ofSetCircleResolution(64);
-    ofSetHexColor(0x90d4e3);
+    ofSetHexColor(0xffffff);
     ofDrawCircle(pos.x, pos.y, 100);
 }
 

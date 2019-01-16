@@ -5,16 +5,14 @@ static bool shouldRemove(shared_ptr<ofxBox2dBaseShape>shape) {
 }
 
 //--------------------------------------------------------------
-
-int lastBangTime;
-
-bool isPlay = false;
-
-//--------------------------------------------------------------
 void ofApp::setup(){
     ofSetVerticalSync(true);
     ofBackgroundHex(0xfdefc2);
     ofSetLogLevel(OF_LOG_NOTICE);
+    
+    colors[0].setHex(0x90d4e3);
+    colors[1].setHex(0x738f6c);
+    colors[2].setHex(0x0000FF);
     
     //OSC設定
     sender.setup(HOST,SEND_PORT);
@@ -88,6 +86,7 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    
     //ボールの描画
     for(auto & b : balls) {
 //        b->draw();
@@ -95,8 +94,8 @@ void ofApp::draw(){
     }
 
     for(auto & c : circles) {
-//        c->display();
-        c->draw();
+        c->display();
+
     }
 //    for(auto & r : rects) {
 //        r->display();
@@ -110,6 +109,11 @@ void ofApp::draw(){
 //    ofSetHexColor(0xFFFFFF);
 //    groundLine.draw();
     
+    
+
+    
+    
+
     
 }
 
@@ -144,9 +148,15 @@ void ofApp::setCircles(){
         pos.x = ofGetWidth()/2 + r * cos(ofDegToRad(i*15));
         pos.y = ofGetHeight()/2 + r * sin(ofDegToRad(i*15));
         
-        shared_ptr<ofxBox2dCircle> c = make_shared<ofxBox2dCircle>();
-        c.get()->setPhysics(1.0, 0.5, 0.1);
-        c.get()->setup(box2d.getWorld(), pos.x, pos.y, 10);
+        shared_ptr<CircleShape> c = make_shared<CircleShape>();
+        
+        int cnt = 0;
+        
+        if(i % 2 ==0){
+            cnt = 1;
+        }
+        
+        c.get()->setupShape(&box2d, pos.x, pos.y, &colors[cnt], &sound[1]);
         circles.push_back(c);
         
     }

@@ -13,7 +13,8 @@ void CircleShape::setupShape(ofxBox2d *world, float x, float y, ofColor *col, of
     setPhysics(1.0, 0.5, 0.1);
     setup(world->getWorld(), pos.x, pos.y, radius);
     
-    circleColor = col;
+    selfColor = col;
+    
     mySound = sound;
     mySound->setMultiPlay(true);
     mySound->setLoop(false);
@@ -25,7 +26,7 @@ void CircleShape::display(){
     pos.y = getPosition().y;
     
     ofFill();
-    ofSetColor(*circleColor);
+    ofSetColor(*selfColor);
     
     ofDrawCircle(pos.x, pos.y, radius);
 };

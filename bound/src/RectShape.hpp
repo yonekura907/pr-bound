@@ -17,19 +17,17 @@
 class RectShape: public ofxBox2dRect {
 public:
     
-    void setupRectShape(ofxBox2d * world, ofSoundPlayer * sound);
-    void updateRectShape(int);
-    void display(int);
-    void remove();
+    void setupShape(ofxBox2d * world, float x, float y, ofColor *col,  ofSoundPlayer * sound);
+
+    void display();
+//    void remove();
     
-    bool isBound = false; //跳ね返るタイミングのフラグ
-    int bangTime, lastBangTime;
-    float rectWidth; //ボールの半径
+    
+    float rectWidth = 16; //ボールの半径
     ofVec2f pos; //ボールの座標
-    
     ofSoundPlayer * mySound;
     
-    
+    ofColor *selfColor;
 };
 
 #endif /* RectShape_hpp */

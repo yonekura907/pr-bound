@@ -7,6 +7,7 @@
 #include "Ball.hpp"
 #include "RectShape.hpp"
 #include "CircleShape.hpp"
+#include "TrianglePolyShape.hpp"
 
 #define N_SOUNDS 5
 class SoundData {
@@ -42,8 +43,8 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
         void setCircles();
-        void setRect();
-        void setPloy();
+        void setRects();
+        void setTriangles();
     
     
     
@@ -69,12 +70,13 @@ class ofApp : public ofBaseApp{
 //    vector <shared_ptr<ofxBox2dCircle>> circles;
     vector <shared_ptr<CircleShape>> circles;
     vector <shared_ptr<RectShape>> rects;
-    vector <shared_ptr<ofxBox2dPolygon>>  polies;
+    vector <shared_ptr<TrianglePolyShape>> triangles;
     
     ofSoundPlayer  sound[N_SOUNDS];
-
     
-    ofColor *colors = new ofColor[3];
+    //シーンの切り替え
+    int scene = 0;
+    ofColor *colors = new ofColor[5];
 
     
     

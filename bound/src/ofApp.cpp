@@ -10,9 +10,13 @@ void ofApp::setup(){
     ofBackgroundHex(0xfdefc2);
     ofSetLogLevel(OF_LOG_NOTICE);
     
-    colors[0].setHex(0x90d4e3);
-    colors[1].setHex(0x738f6c);
-    colors[2].setHex(0x0000FF);
+    colors[0].setHex(0xEDDE49);
+    colors[1].setHex(0x4862B8);
+    colors[2].setHex(0x82BC4B);
+    colors[3].setHex(0x51C6D5);
+    colors[4].setHex(0xEA4599);
+    
+    
     
     //OSC設定
     sender.setup(HOST,SEND_PORT);
@@ -69,53 +73,56 @@ void ofApp::update(){
             //シェイプの落下
 //            setRect();
             setCircles();
-//            setPloy();
+//            setTriangles();
             
             //ボールの値をリセット
             b.get()->reset();
         }
-        
-        
     }
 
-    
-    
-    
     box2d.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     
+    
+    ofSetColor(colors[scene]);
+    ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
+
+    
+//    switch (scene) {
+//        case 0:
+//
+//            break;
+//
+//        default:
+//            break;
+//    }
+    
+    
+    
     //ボールの描画
     for(auto & b : balls) {
-//        b->draw();
         b->display();
     }
-
+    //シェイプの描画
     for(auto & c : circles) {
         c->display();
-
     }
-//    for(auto & r : rects) {
-//        r->display();
-//    }
-//    for(auto & p : polies) {
-//        ofSetHexColor(0x738f6c);
-//        p->draw();
-//    }
+    for(auto & r : rects) {
+        r->display();
+    }
+    for(auto & t : triangles) {
+        t->display();
+    }
 
     //地面の描画　不要
 //    ofSetHexColor(0xFFFFFF);
 //    groundLine.draw();
-    
-    
 
-    
-    
-
-    
 }
+
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
@@ -128,8 +135,8 @@ void ofApp::keyPressed(int key){
     if(key == 'c') {
         circles.clear();
     }
-    if(key == 'p') {
-        polies.clear();
+    if(key == 't') {
+        triangles.clear();
     }
     if(key == 'r') {
         rects.clear();
@@ -139,14 +146,21 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::setCircles(){
+    
+    scene = floor(ofRandom(0,5));
+    
     cout << "start circle" << endl;
     int r = 200;
-
+    ofVec2f startPos;
+    ofVec2f pos;
+    startPos.x = ofRandom(ofGetWidth()/2-400,ofGetWidth()/2+400);
+    startPos.y = ofRandom(ofGetHeight()/4,(ofGetHeight()/4)*3);
+    
     for (int i=0; i<24; i++) {
         
-        ofVec2f pos;
-        pos.x = ofGetWidth()/2 + r * cos(ofDegToRad(i*15));
-        pos.y = ofGetHeight()/2 + r * sin(ofDegToRad(i*15));
+        
+        pos.x = startPos.x + (r - i*6) * cos(ofDegToRad(i*15));
+        pos.y = startPos.y + (r - i*6) * sin(ofDegToRad(i*15));
         
         shared_ptr<CircleShape> c = make_shared<CircleShape>();
         
@@ -157,6 +171,7 @@ void ofApp::setCircles(){
         }
         
         c.get()->setupShape(&box2d, pos.x, pos.y, &colors[cnt], &sound[1]);
+        
         circles.push_back(c);
         
     }
@@ -164,45 +179,34 @@ void ofApp::setCircles(){
 }
 
 
-void ofApp::setRect(){
-//    if(ofGetFrameNum() % 10  == 0){
-        shared_ptr<RectShape> r = make_shared<RectShape>();
-        r.get()->setupRectShape(&box2d, &sound[0]);
-        rects.push_back(r);
-        ofRemove(rects, shouldRemove);
-//    }
+void ofApp::setRects(){
+    ofVec2f pos;
+    pos.x = ofGetWidth()/2;
+    pos.y = 0;
+    shared_ptr<RectShape> r = make_shared<RectShape>();
+    r.get()->setupShape(&box2d, pos.x, pos.y, &colors[1], &sound[0]);
     
+//    float angle = r.get()->getRotation();
+//    r.get()->setFixedRotation(90);
+//    cout << angle << endl;
+    rects.push_back(r);
+    ofRemove(rects, shouldRemove);
 }
 
 
 
-void ofApp::setPloy(){
-    if((int)ofRandom(0, 1) == 0) {
-        shared_ptr<ofxBox2dPolygon> p = make_shared<ofxBox2dPolygon>();
-        ofVec2f p_pos;
-        p_pos.x = (balls.back().get()->pos.x)+ofRandom(-200, 200);
-        p_pos.y = -10;
-        float r = ofRandom(10, 40);
-        float rsin30 = r * sin(M_PI / 6.0);
-        float rcos30 = r * cos(M_PI / 6.0);
-        
-//        p.get()->addVertex(p_pos.x - rsin30, p_pos.y - rcos30);
-//        p.get()->addVertex(p_pos.x - r, p_pos.y);
-//        p.get()->addVertex(p_pos.x - rsin30, p_pos.y + rcos30);
-        
-        
-        float theta = ofDegToRad(ofRandom(0,360));
-        
-        int cornerCount = 24;
-        for (int i = 0; i < cornerCount; i++) {
-            p.get()->addVertex(p_pos.x + r * cos(ofDegToRad(360*i/cornerCount)), p_pos.y + r * sin(ofDegToRad(360*i/cornerCount)));
-        }
-        p.get()->close();
-        p.get()->setPhysics(1.0, 0.4, 0.2);
-        p.get()->create(box2d.getWorld());
-        polies.push_back(p);
-    }
-    ofRemove(polies, shouldRemove);
+void ofApp::setTriangles(){
+    
+    cout << "setTriangles start" << endl;
+    shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+    ofVec2f pos;
+    pos.x = ofGetWidth()/2;
+    pos.y = 0;
+    
+    t.get()->setupShape(&box2d, pos.x, pos.y, &colors[1], &sound[0]);
+
+    triangles.push_back(t);
+    ofRemove(triangles, shouldRemove);
 }
 
 

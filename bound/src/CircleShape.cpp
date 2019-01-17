@@ -7,11 +7,12 @@
 
 #include "CircleShape.hpp"
 
-void CircleShape::setupShape(ofxBox2d *world, float x, float y, ofColor *col, ofSoundPlayer* sound){
+void CircleShape::setupShape(ofxBox2d *world, float x, float y, float radius, ofColor *col, ofSoundPlayer* sound){
     pos.x = x;
     pos.y = y;
+    selfRadius = radius;
     setPhysics(1.0, 0.5, 0.1);
-    setup(world->getWorld(), pos.x, pos.y, radius);
+    setup(world->getWorld(), pos.x, pos.y, selfRadius);
     
     selfColor = col;
     
@@ -28,6 +29,6 @@ void CircleShape::display(){
     ofFill();
     ofSetColor(*selfColor);
     
-    ofDrawCircle(pos.x, pos.y, radius);
+    ofDrawCircle(pos.x, pos.y, selfRadius);
 };
 

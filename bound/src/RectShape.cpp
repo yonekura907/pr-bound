@@ -7,11 +7,12 @@
 
 #include "RectShape.hpp"
 
-void RectShape::setupShape(ofxBox2d *world, float x, float y, ofColor *col, ofSoundPlayer* sound){
+void RectShape::setupShape(ofxBox2d *world, float x, float y, float rectWidth, ofColor *col, ofSoundPlayer* sound){
     pos.x = x;
     pos.y = y;
+    selfWidth = rectWidth;
     setPhysics(1.0, 0.5, 0.1);
-    setup(world->getWorld(), pos.x, pos.y, rectWidth, rectWidth);
+    setup(world->getWorld(), pos.x, pos.y, selfWidth, selfWidth);
     
     selfColor = col;
     
@@ -26,10 +27,15 @@ void RectShape::display(){
     pos.x = getPosition().x;
     pos.y = getPosition().y;
     
+    float w = getWidth();
+    float h = getHeight();
+    
+//    cozzut << "w:" << w << "h:" << h << endl;
+    
     ofFill();
     ofSetColor(*selfColor);
-    ofSetRectMode(OF_RECTMODE_CORNER);
+//    ofSetRectMode(OF_RECTMODE_CORNER);
 
-    ofDrawRectangle(pos.x, pos.y, rectWidth, rectWidth);
+    ofDrawRectangle(pos.x-w/2, pos.y-h/2, w, h);
     
 }

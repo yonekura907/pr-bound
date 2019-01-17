@@ -8,16 +8,17 @@
 #include "TrianglePolyShape.hpp"
 
 
-void TrianglePolyShape::setupShape(ofxBox2d *world, float x, float y, ofColor *col, ofSoundPlayer* sound){
+void TrianglePolyShape::setupShape(ofxBox2d *world, float x, float y, float radius, int cornerCount, ofColor *col, ofSoundPlayer* sound){
     pos.x = x;
     pos.y = y;
-
+    selfRadius = radius;
+    selfCornerCount = cornerCount;
 //    setup(world->getWorld(), pos.x, pos.y, radius);
     
     selfColor = col;
     selfWorld = world;
     
-    cout << selfWorld << endl;
+//    cout << selfWorld << endl;
     
     mySound = sound;
     mySound->setMultiPlay(true);
@@ -28,13 +29,12 @@ void TrianglePolyShape::setupShape(ofxBox2d *world, float x, float y, ofColor *c
     
     ofFill();
     ofSetColor(*selfColor);
-    
-    int cornerCount = 4;
-    for (int i = 0; i < cornerCount; i++) {
-        addVertex(pos.x + radius * cos(ofDegToRad(360*i/cornerCount)), pos.y + radius * sin(ofDegToRad(360*i/cornerCount)));
+
+    for (int i = 0; i < selfCornerCount; i++) {
+        addVertex(pos.x + selfRadius * cos(ofDegToRad(360*i/selfCornerCount)), pos.y + selfRadius * sin(ofDegToRad(360*i/selfCornerCount)));
     }
     close();
-    setPhysics(1.0, 0.4, 0.2);
+    setPhysics(1.0, 0.4, 0.4);
     create(selfWorld->getWorld());
     
 }

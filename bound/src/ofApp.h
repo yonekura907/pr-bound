@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxBox2d.h"
+#include "ofxJSON.h"
 
 #include "ofxOsc.h"
 #include "Ball.hpp"
@@ -45,8 +46,25 @@ class ofApp : public ofBaseApp{
         void setCircles();
         void setRects();
         void setTriangles();
+    void setScene();
+    
+        void sc01();
+        void sc02();
+        void sc03();
+        void sc04();
+        void sc05();
+        void sc06();
+        void sc07();
+        void sc08();
+        void sc09();
     
     
+    // p5 properties
+    float width = ofGetWidth();
+    float height = ofGetHeight();
+    
+    //JSON
+    ofxJSONElement json;
     
     //OSC
     ofxOscSender sender;
@@ -56,6 +74,8 @@ class ofApp : public ofBaseApp{
 
     // box2d world
     ofxBox2d box2d;
+    
+    ofVec2f shapeMinArea, shapeMaxArea;
     
     //地面
     ofPolyline groundLine;
@@ -70,6 +90,7 @@ class ofApp : public ofBaseApp{
 //    vector <shared_ptr<ofxBox2dCircle>> circles;
     vector <shared_ptr<CircleShape>> circles;
     vector <shared_ptr<RectShape>> rects;
+//    vector <shared_ptr<ofxBox2dRect>> rects;
     vector <shared_ptr<TrianglePolyShape>> triangles;
     
     ofSoundPlayer  sound[N_SOUNDS];

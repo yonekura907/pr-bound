@@ -14,11 +14,11 @@
 
 class CircleShape: public ofxBox2dCircle{
 public:
-    void setupShape(ofxBox2d *world, float x, float y, ofColor *col, ofSoundPlayer *sound);
+    void setupShape(ofxBox2d *world, float x, float y, float radius, ofColor *col, ofSoundPlayer *sound);
     void display();
 //    void remove();
     
-    float radius = 16; //ボールの半径
+    float selfRadius; //ボールの半径
     ofVec2f pos;
     ofSoundPlayer * mySound;
     

@@ -6,32 +6,48 @@ static bool shouldRemove(shared_ptr<ofxBox2dBaseShape>shape) {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofSetVerticalSync(true);
     
-    ofSetLogLevel(OF_LOG_NOTICE);
-    ofBackgroundHex(0xfdefc2);
-    
-    string file = "dots.json";
-    bool success = json.open(file);
-    if (success){
-        cout << json.getRawString() << endl;
-    } else {
-        cout << "Failed to parse JSON" << endl;
-    }
-//        string bg = json["colors"][0]["bg"].asString();
-    
+    //カラーの登録
     colors[0].setHex(0xEDDE49);
     colors[1].setHex(0x4862B8);
     colors[2].setHex(0x82BC4B);
     colors[3].setHex(0x51C6D5);
     colors[4].setHex(0xEA4599);
     
+    bgColor[0].setHex(0xEEEEEE);
+    bgColor[1].setHex(0xE6F2FF);
+    bgColor[2].setHex(0xFDEFC2);
+    
+    ofSetVerticalSync(true);
+//    ofSetLogLevel(OF_LOG_NOTICE);
+    ofBackground(bgColor[0]);
+    
+    // load json ----------------------------
+    string file = "dots.json";
+    bool success = json.open(file);
+    if (success){
+//        cout << json.getRawString() << endl;
+    } else {
+        cout << "Failed to parse JSON" << endl;
+    }
+
+    
+    
+    
+    std::vector<int> v(10);
+    iota(v.begin(), v.end(), 0); // 0～9 までの値を生成
+    random_device seed_gen;
+    mt19937 engine(seed_gen());
+    shuffle(v.begin(), v.end(), engine);
+    
+
+    
     
     //シェイプの描画範囲
     shapeMinArea.x = 50;
     shapeMinArea.y = 50;
     shapeMaxArea.x = ofGetWidth()-50;
-    shapeMaxArea.y = ofGetHeight()/3 * 2;
+    shapeMaxArea.y = ofGetHeight()/2;
     
     
     //OSC設定
@@ -49,6 +65,10 @@ void ofApp::setup(){
     box2d.createGround(10, ofGetHeight()-1, ofGetWidth()-10, ofGetHeight()-1);
     groundLine.addVertex(10, ofGetHeight()-1);
     groundLine.addVertex( ofGetWidth()-10, ofGetHeight()-1);
+    
+    // register the listener so that we get the events
+    ofAddListener(box2d.contactStartEvents, this, &ofApp::contactStart);
+    ofAddListener(box2d.contactEndEvents, this, &ofApp::contactEnd);
     
     // サウンドファイルの読み込み
     for(int i=0; i<N_SOUNDS; i++) {
@@ -68,6 +88,53 @@ void ofApp::setup(){
 
 
 //--------------------------------------------------------------
+void ofApp::contactStart(ofxBox2dContactArgs &e) {
+    
+
+    
+    if(e.a != NULL && e.b != NULL) {
+        
+        
+        
+        
+        // if we collide with the ground we do not
+        // want to play a sound. this is how you do that
+        if(e.a->GetType() == b2Shape::e_circle && e.b->GetType() == b2Shape::e_circle) {
+            
+            SoundData * aData = (SoundData*)e.a->GetBody()->GetUserData();
+            SoundData * bData = (SoundData*)e.b->GetBody()->GetUserData();
+            
+            if(aData) {
+                aData->bHit = true;
+                sound[aData->soundID].play();
+            }
+            
+            if(bData) {
+                bData->bHit = true;
+                sound[bData->soundID].play();
+            }
+        }
+    }
+}
+
+//--------------------------------------------------------------
+void ofApp::contactEnd(ofxBox2dContactArgs &e) {
+    if(e.a != NULL && e.b != NULL) {
+        
+        SoundData * aData = (SoundData*)e.a->GetBody()->GetUserData();
+        SoundData * bData = (SoundData*)e.b->GetBody()->GetUserData();
+        
+        if(aData) {
+            aData->bHit = false;
+        }
+        
+        if(bData) {
+            bData->bHit = false;
+        }
+    }
+}
+
+//--------------------------------------------------------------
 void ofApp::update(){
     // ボールの落下 ---------------------------- update
     for(auto & b : balls) {
@@ -85,6 +152,7 @@ void ofApp::update(){
             sender.sendMessage(msg);
             //シェイプの落下
             setScene();
+//            sc01();
             //ボールの値をリセット
             b.get()->reset();
         }
@@ -94,14 +162,35 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-//    ofSetColor(0xfdefc2);
-//    ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
+    switch (scene) {
+        case 1:
+           ofSetColor(bgColor[0]);
+            break;
+        case 2:
+            ofSetColor(bgColor[0]);
+            break;
+        case 3:
+            ofSetColor(bgColor[1]);
+            break;
+        case 4:
+            ofSetColor(bgColor[1]);
+            break;
+        case 5:
+            ofSetColor(bgColor[2]);
+            break;
+            
+        default:
+            break;
+    }
+    ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
+    
     //ボールの描画
     for(auto & b : balls) {
         b->display();
     }
     //シェイプの描画
     for(auto & c : circles) {
+        SoundData * data = (SoundData*)c.get()->getData();
         c->display();
     }
     for(auto & r : rects) {
@@ -167,49 +256,65 @@ void ofApp::setScene(){
 
 
 void ofApp::sc01(){
-    shared_ptr<RectShape> r = make_shared<RectShape>();
-    r.get()->setupShape(&box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(50,150), &colors[1], &sound[0]);
-    rects.push_back(r);
-    ofRemove(rects, shouldRemove);
-    
-    shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-    t.get()->setupShape(&box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(50,150), 3, &colors[1], &sound[0]);
-    triangles.push_back(t);
-    ofRemove(triangles, shouldRemove);
-    
-    shared_ptr<CircleShape> c = make_shared<CircleShape>();
-    c.get()->setupShape(&box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(20,80), &colors[2], &sound[1]);
-    circles.push_back(c);
-    ofRemove(circles, shouldRemove);
+    int colorNum = ofRandom(0, sizeof(colors));
+    int dotLength = json["alphabets"][0]["pos"].size();
+    for (int i=0; i<dotLength; i++) {
+        shared_ptr<CircleShape> c = make_shared<CircleShape>();
+        ofVec2f pos;
+        pos.x = json["alphabets"][0]["pos"][i]["x"].asInt();
+        pos.y = json["alphabets"][0]["pos"][i]["y"].asInt();
+        c.get()->setupShape(&box2d, pos.x/2, pos.y/2, 16, &colors[colorNum], &sound[1]);
+        c.get()->setData(new SoundData());
+        SoundData * sd = (SoundData*)c.get()->getData();
+        sd->soundID = ofRandom(0, N_SOUNDS);
+        sd->bHit    = false;
+        circles.push_back(c);
+    }
 }
 
 void ofApp::sc02(){
+    std::vector<int> v(sizeof(colors));
+    iota(v.begin(), v.end(), 0); // 0～9 までの値を生成
+    random_device seed_gen;
+    mt19937 engine(seed_gen());
+    shuffle(v.begin(), v.end(), engine);
+    int colorNum0 = v[0];
+    int colorNum1 = v[1];
+
     float splitNum = width/7;
     shared_ptr<RectShape> r1 = make_shared<RectShape>();
-    r1.get()->setupShape(&box2d, width/2 - splitNum*3, 50, 10, &colors[1], &sound[0]);
+    r1.get()->setupShape(&box2d, width/2 - splitNum*3, 50, 10, &colors[colorNum0], &sound[0]);
     rects.push_back(r1);
     shared_ptr<RectShape> r2 = make_shared<RectShape>();
-    r2.get()->setupShape(&box2d, width/2 - splitNum*2 , 50, 20, &colors[1], &sound[0]);
+    r2.get()->setupShape(&box2d, width/2 - splitNum*2 , 50, 20, &colors[colorNum1], &sound[0]);
     rects.push_back(r2);
     shared_ptr<RectShape> r3 = make_shared<RectShape>();
-    r3.get()->setupShape(&box2d, width/2 - splitNum, 50, 40, &colors[1], &sound[0]);
+    r3.get()->setupShape(&box2d, width/2 - splitNum, 50, 40, &colors[colorNum0], &sound[0]);
     rects.push_back(r3);
     shared_ptr<RectShape> r4 = make_shared<RectShape>();
-    r4.get()->setupShape(&box2d, width/2 , 50, 80, &colors[1], &sound[0]);
+    r4.get()->setupShape(&box2d, width/2 , 50, 80, &colors[colorNum1], &sound[0]);
     rects.push_back(r4);
     shared_ptr<RectShape> r5 = make_shared<RectShape>();
-    r5.get()->setupShape(&box2d, width/2 + splitNum, 50, 120, &colors[1], &sound[0]);
+    r5.get()->setupShape(&box2d, width/2 + splitNum, 50, 120, &colors[colorNum0], &sound[0]);
     rects.push_back(r5);
     shared_ptr<RectShape> r6 = make_shared<RectShape>();
-    r6.get()->setupShape(&box2d, width/2 + splitNum*2 , 50, 160, &colors[1], &sound[0]);
+    r6.get()->setupShape(&box2d, width/2 + splitNum*2 , 50, 160, &colors[colorNum1], &sound[0]);
     rects.push_back(r6);
     shared_ptr<RectShape> r7 = make_shared<RectShape>();
-    r7.get()->setupShape(&box2d, width/2 + splitNum*3, 50, 200, &colors[1], &sound[0]);
+    r7.get()->setupShape(&box2d, width/2 + splitNum*3, 50, 200, &colors[colorNum0], &sound[0]);
     rects.push_back(r7);
     ofRemove(rects, shouldRemove);
 }
 
 void ofApp::sc03(){
+    std::vector<int> v(sizeof(colors));
+    iota(v.begin(), v.end(), 0); // 0～9 までの値を生成
+    random_device seed_gen;
+    mt19937 engine(seed_gen());
+    shuffle(v.begin(), v.end(), engine);
+    int colorNum0 = v[0];
+    int colorNum1 = v[1];
+    
     ofVec2f startPos;
     ofVec2f pos;
     startPos.x = ofRandom(shapeMinArea.x+100,shapeMaxArea.x-100);
@@ -218,34 +323,40 @@ void ofApp::sc03(){
     int trm = tr*2;
     for (int i=0; i<5; i++) {
         shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-        t.get()->setupShape(&box2d, startPos.x, startPos.y + trm * i, tr, 3, &colors[0], &sound[0]);
+        t.get()->setupShape(&box2d, startPos.x, startPos.y + trm * i, tr, 3, &colors[colorNum0], &sound[0]);
         triangles.push_back(t);
     }
     for (int i=0; i<4; i++) {
         shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-        t.get()->setupShape(&box2d, startPos.x + trm, startPos.y + trm * i + trm/2, tr, 3, &colors[1], &sound[0]);
+        t.get()->setupShape(&box2d, startPos.x + trm, startPos.y + trm * i + trm/2, tr, 3, &colors[colorNum1], &sound[0]);
         triangles.push_back(t);
     }
     for (int i=0; i<3; i++) {
         shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-        t.get()->setupShape(&box2d, startPos.x + trm*2, startPos.y + trm * i + trm, tr, 3, &colors[0], &sound[0]);
+        t.get()->setupShape(&box2d, startPos.x + trm*2, startPos.y + trm * i + trm, tr, 3, &colors[colorNum0], &sound[0]);
         triangles.push_back(t);
     }
     for (int i=0; i<2; i++) {
         shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-        t.get()->setupShape(&box2d, startPos.x + trm*3, startPos.y + trm * i + trm*3/2, tr, 3, &colors[1], &sound[0]);
+        t.get()->setupShape(&box2d, startPos.x + trm*3, startPos.y + trm * i + trm*3/2, tr, 3, &colors[colorNum1], &sound[0]);
         triangles.push_back(t);
     }
     for (int i=0; i<1; i++) {
         shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-        t.get()->setupShape(&box2d, startPos.x + trm*4, startPos.y + trm * i + trm*4/2, tr, 3, &colors[0], &sound[0]);
+        t.get()->setupShape(&box2d, startPos.x + trm*4, startPos.y + trm * i + trm*4/2, tr, 3, &colors[colorNum0], &sound[0]);
         triangles.push_back(t);
     }
     ofRemove(triangles, shouldRemove);
 }
 
 void ofApp::sc04(){
-    int r = floor(ofRandom(120,200));
+    std::vector<int> v(sizeof(colors));
+    iota(v.begin(), v.end(), 0); // 0～9 までの値を生成
+    random_device seed_gen;
+    mt19937 engine(seed_gen());
+    shuffle(v.begin(), v.end(), engine);
+
+    int r = floor(ofRandom(180,240));
     ofVec2f startPos;
     ofVec2f pos;
     startPos.x = ofRandom(shapeMinArea.x+100,shapeMaxArea.x-100);
@@ -254,9 +365,9 @@ void ofApp::sc04(){
         pos.x = startPos.x + r * cos(ofDegToRad(i*10));
         pos.y = startPos.y + r * sin(ofDegToRad(i*10));
         shared_ptr<CircleShape> c = make_shared<CircleShape>();
-        int cnt = 0;
+        int cnt = v[0];
         if(i % 2 ==0){
-            cnt = 1;
+            cnt = v[1];
         }
         c.get()->setupShape(&box2d, pos.x, pos.y,16, &colors[cnt], &sound[1]);
         circles.push_back(c);
@@ -285,6 +396,23 @@ void ofApp::sc05(){
         c.get()->setupShape(&box2d, pos.x, pos.y, cr, &colors[cnt], &sound[1]);
         circles.push_back(c);
     }
+    ofRemove(circles, shouldRemove);
+}
+
+void ofApp::sc07(){
+    shared_ptr<RectShape> r = make_shared<RectShape>();
+    r.get()->setupShape(&box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(50,150), &colors[1], &sound[0]);
+    rects.push_back(r);
+    ofRemove(rects, shouldRemove);
+    
+    shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+    t.get()->setupShape(&box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(50,150), 3, &colors[1], &sound[0]);
+    triangles.push_back(t);
+    ofRemove(triangles, shouldRemove);
+    
+    shared_ptr<CircleShape> c = make_shared<CircleShape>();
+    c.get()->setupShape(&box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(20,80), &colors[2], &sound[1]);
+    circles.push_back(c);
     ofRemove(circles, shouldRemove);
 }
 

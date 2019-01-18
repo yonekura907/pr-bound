@@ -1,7 +1,7 @@
 #pragma once
 //
 //  RectShape.hpp
-//  musique_beta01-2
+//  bound
 //
 //  Created by yonekuraakio on 2019/01/14.
 //

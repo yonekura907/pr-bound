@@ -11,6 +11,7 @@
 #include <iterator>
 #include <random>
 
+
 #include "ofxOsc.h"
 #include "Ball.hpp"
 #include "RectShape.hpp"
@@ -53,7 +54,7 @@ class ofApp : public ofBaseApp{
         void setCircles();
         void setRects();
         void setTriangles();
-    void setScene();
+        void setScene();
     
         void sc01();
         void sc02();
@@ -101,13 +102,13 @@ class ofApp : public ofBaseApp{
     vector <shared_ptr<TrianglePolyShape>> triangles;
     
     // this is the function for contacts
-    void contactStart(ofxBox2dContactArgs &e);
-    void contactEnd(ofxBox2dContactArgs &e);
+//    void contactStart(ofxBox2dContactArgs &e);
+//    void contactEnd(ofxBox2dContactArgs &e);
     ofSoundPlayer  sound[N_SOUNDS];
     
     //シーンの切り替え
     int scene = 0;
-    ofColor *colors = new ofColor[5];
+    ofColor *colors = new ofColor[6];
     ofColor *bgColor = new ofColor[3];
     
     

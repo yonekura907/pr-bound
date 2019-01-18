@@ -1,6 +1,6 @@
 //
 //  Ball.cpp
-//  musique_beta01
+//  bound
 //
 //  Created by yonekuraakio on 2019/01/11.
 //

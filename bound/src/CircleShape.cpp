@@ -1,6 +1,6 @@
 //
 //  CircleShape.cpp
-//  musique_beta01-2
+//  bound
 //
 //  Created by yonekuraakio on 2019/01/16.
 //
@@ -28,7 +28,6 @@ void CircleShape::display(){
     
     ofFill();
     ofSetColor(*selfColor);
-    
     ofDrawCircle(pos.x, pos.y, selfRadius);
 };
 

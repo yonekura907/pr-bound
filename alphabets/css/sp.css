@@ -1,0 +1,309 @@
+
+body {
+    background: #666;
+    font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+    /*font-size: 26px;*/
+    -webkit-text-size-ajust:100%;
+}
+
+a{
+    text-decoration: none;
+}
+
+#defaultCanvas0{
+    position: absolute;
+    left:0;
+    top:0;
+}
+
+
+#container{
+    width: 100%;
+    height: 100vh;
+}
+
+.dots-message{
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.mdl-textfield {
+    position: relative;
+    font-size: 16px;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 20px 0;
+}
+
+.mdl-textfield__input {
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    display: block;
+    font-size: 4rem;
+    font-family: "Helvetica","Arial",sans-serif;
+    margin: 0;
+    padding: 4px 0;
+    width: 100%;
+    background: 0 0;
+    text-align: left;
+    color: #FFF;
+}
+
+.mdl-textfield__label {
+    bottom: 0;
+    color: rgba(255,255,255,.26);
+    font-size: 1rem;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    position: absolute;
+    display: block;
+    top: 24px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: left;
+}
+.search-input__all {
+    position: absolute;
+    text-align: right;
+    display: block;
+    opacity: 1;
+    background: none;
+    border: 0;
+    top: 6rem;
+    right: 0;
+    width: 10rem;
+    padding: 1.5rem 0;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+/*    -webkit-font-smoothing: subpixel-antialiased;
+    -webkit-transition: opacity .125s;
+    transition: opacity .125s;
+    -webkit-transition: color .15s;
+    transition: color .15s;*/
+}
+
+.search-input__all .search-input__all-link {
+    color: #b3b3b3;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.search-input__all-svg-line--with-value {
+    stroke: #f7f7f7;
+}
+
+a {
+    color: #2b2b2b;
+    -webkit-transition: color .15s;
+    transition: color .15s;
+}
+.search-input__all-svg {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: .8rem;
+    width: 7px;
+    height: 12px;
+}
+.char-num{
+    position: absolute;
+    top: 7.5rem;
+    left: 1rem;
+    color: #ccc;
+    font-size: 2rem;
+}
+
+.rotation-fade-in{
+    animation-name: fade-in;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-delay: 0;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+.canvas-fade-in{
+    animation-name: fade-in;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-delay: 0;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+@keyframes fade-in{
+    0% {
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out{
+    0% {
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+.rotation{
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: absolute;
+    left: 0;
+    top:0;
+    opacity: 0;
+    padding: 270px 0 0;
+    z-index: 20;
+    text-align: center;
+    background-color: rgba(0,0,0,0.98);
+    color: #FFF;
+}
+.rotation div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.rotation div i{
+    font-size: 64px;
+}
+.rotation .close-btn{
+    position: absolute;
+    right: 0;
+    top:0;
+    border: 0;
+    background: none;
+    width: 4rem;
+    height: 4rem;
+    display: inline-block;
+    padding: .5rem;
+    cursor: pointer;
+}
+
+.rotation .close-btn .close{
+    fill: #CCC;
+}
+
+
+
+/* Sequencer ------------------ */
+
+.btn{
+    width: 20px;
+    height: 20px;
+    border-radius:40px;
+    background-color: #FF0000;
+    font-size: 10px;
+    line-height: 4;
+    cursor: pointer;
+    opacity: 0;
+    margin-top: -4px;
+    margin-left: -4px;
+}
+
+/*.send{
+    width:500px;
+    height: 500px;
+    position: absolute;
+    background-color: #0000ff;
+    opacity:0.5;
+}*/
+
+/*splush画面------------------------*/
+/*隠しておくため*/
+
+/*
+#contents{
+    background: #000000;
+}
+
+#select{
+    width: 100%;
+    box-sizing:border-box;
+    padding: 160px 20px 0;
+    display: none;
+}
+
+#synthBtn{
+    padding: 40px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    color: rgb(247,61,129);
+    text-align: center;
+    background-color: #333;
+    -webkit-border-rudius:3px;
+    border-radius: 3px;
+    border: 1px solid rgb(247,61,129);
+    display: block;
+}
+
+#liveBtn{
+    margin-top: 30px;
+    padding: 40px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    color: rgb(56,207,221);
+    text-align: center;
+    background-color: #333;
+    -webkit-border-rudius:3px;
+    border-radius: 3px;
+    border: 1px solid rgb(56,207,221);
+    display: block;
+}*/
+/*入力画面---------------------------*/
+/*#input{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 160px 20px 0;
+    display: none;
+}
+input[type=text] {
+  font-size: 24px;
+}
+
+#inputName{
+    padding:20px;
+    width: 100%;
+    box-sizing: border-box;
+    color: #888888;
+    background-color: #333;
+    -webkit-border-rudius:3px;
+    border-radius: 3px;
+    border:1px solid rgb(247,61,129);
+}
+
+#submit{
+    width: 100%;
+    box-sizing:border-box;
+    padding: 20px;
+    margin-top: 27px;
+    background-color: #999;
+    text-align: center;
+    color: #333;
+    display:block;
+}
+
+#back{
+    margin-top:40px;
+    color:#FFF;
+    text-align:center;
+    font-size: 20px;
+}
+*/

@@ -1,0 +1,24 @@
+body{
+    width: 100%;
+    height: 100%;
+    /*background-image:url(../img/dots_website.png)center center no-repeat;*/
+    /*background-size: 1280px 3201px;*/
+    /*background-size: 1280px 3201px;*/
+    /*position:relative;*/
+
+}
+
+img{
+    width: 1280px;
+    height: 3201px;
+    position: relative;
+    z-index: 2;
+}
+
+#url{
+    font-size: 20px;
+    color: #FFF;
+    position: absolute;
+    z-index: 1;
+
+}

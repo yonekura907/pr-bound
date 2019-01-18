@@ -15,11 +15,9 @@ void Ball::setupBall(int x, int y, ofxBox2d * world){
 
 
 void Ball::updateBall(float x, float y){
-    
     //Kinectのときはこっちを使う----------------------
     pos.x = x;
     pos.y = y;
-    
     //ボールの現在座標
     pos.x = getPosition().x;
     pos.y = getPosition().y;
@@ -54,8 +52,10 @@ void Ball::updateBall(float x, float y){
 
 void Ball::display(){
     ofSetCircleResolution(64);
-    ofSetHexColor(0xffffff);
-    ofDrawCircle(pos.x, pos.y, 100);
+    ofSetHexColor(0xDDDDDD);
+    ofDrawCircle(pos.x, pos.y, radius);
+    ofSetHexColor(0xEEEEEE);
+    ofDrawCircle(pos.x, pos.y, radius-20);
 }
 
 

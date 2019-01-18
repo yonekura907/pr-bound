@@ -4,8 +4,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofSetWindowShape(1280, 800);
-//    ofBackground(bgColor[0]);
-    ofBackgroundHex(0xEEEEEE);
+    ofBackgroundHex(0xFFFFFF);
     ofSetVerticalSync(true);
 //    ofSetLogLevel(OF_LOG_NOTICE);
     
@@ -14,7 +13,7 @@ void ofApp::setup(){
  
     //Box2dの初期設定
     box2d.init();
-    box2d.setGravity(0, 9.8);
+    box2d.setGravity(0, 18);
     //    box2d.createBounds();
     box2d.setFPS(60.0);
     box2d.registerGrabbing(); //本番では外す　オブジェクトを掴めるように
@@ -30,11 +29,9 @@ void ofApp::setup(){
     ballPos.set(ofGetWidth()/2,ofGetHeight()/2);
     balls.push_back(b);
     
-    
     //シーンクラスの生成
     bScene = new BoundScene(&box2d);
     bScene->setup();
-    
 }
 
 //--------------------------------------------------------------
@@ -46,7 +43,7 @@ void ofApp::update(){
         //ボールの値の更新kinectの値を入れる
         b->updateBall(ballPos.x, ballPos.y);
         
-        // アドレスを設定
+        // OSCアドレスを設定 Maxに送る場合に使うかも
 //        ofxOscMessage msg;
 //        msg.setAddress("/ballDown");
 //        cout << "noteNum: " << noteNum << endl;
@@ -95,8 +92,6 @@ void ofApp::keyPressed(int key){
     }
     
     bScene->keyPressed(key);
-    
-    
 
 }
 

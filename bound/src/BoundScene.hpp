@@ -24,7 +24,7 @@
 #include "TrianglePolyShape.hpp"
 #include "ofxJSON.h"
 
-#define N_SOUNDS 5
+#define N_SOUNDS 9
 class SoundData {
 public:
     int  soundID;
@@ -74,7 +74,7 @@ public:
     ofColor *colors = new ofColor[6];
     int sNum[6]={0,1,2,3,4,5};
     
-    ofSoundPlayer  sound[N_SOUNDS];
+    ofSoundPlayer sound[N_SOUNDS];
 
 };
 

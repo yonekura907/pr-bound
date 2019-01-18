@@ -34,7 +34,7 @@ void TrianglePolyShape::setupShape(ofxBox2d *world, float x, float y, float radi
         addVertex(pos.x + selfRadius * cos(ofDegToRad(360*i/selfCornerCount)), pos.y + selfRadius * sin(ofDegToRad(360*i/selfCornerCount)));
     }
     close();
-    setPhysics(1.0, 0.4, 0.9);
+    setPhysics(1.0, 0.4, 0.1);
     create(selfWorld->getWorld());
     
 }

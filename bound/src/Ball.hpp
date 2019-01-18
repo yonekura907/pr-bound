@@ -25,7 +25,7 @@ public:
     
     bool isBound = false; //跳ね返るタイミングのフラグ
     float diffVal = 20; //速度差の許容値　この数値で音が鳴るタイミングが変わる
-    float radius = 100; //ボールの半径
+    float radius = 140; //ボールの半径
     ofVec2f pos; //ボールの座標
     float refPosY; //地面までの値 Y座標を反転
     float maxPosY; //ball高さのの最大値　この値が音階としてOSC送信される

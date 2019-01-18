@@ -39,6 +39,7 @@
 		5146AEB9E58FB1B388820C2A /* b2WorldCallbacks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 561370923A365A4A9DC9FB8A /* b2WorldCallbacks.cpp */; };
 		5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF49D76C45D5DB505A234880 /* ofxOscMessage.cpp */; };
 		5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C88333E71C9457E441C33474 /* ofxButton.cpp */; };
+		5E28D53D47744DED2DF5AC5F /* BoundScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D76DC1BE4E3C649B9AB59E5 /* BoundScene.cpp */; };
 		62545D179C94265CA1389D4A /* OscOutboundPacketStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63A47AC60FFAFC3BF093EC0F /* OscOutboundPacketStream.cpp */; };
 		640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C2FAC65C491D4231379F3298 /* ofxOscReceiver.cpp */; };
 		64F975DC016F17834FBB9F01 /* b2PrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC7229CC8FEF0087C9482F1 /* b2PrismaticJoint.cpp */; };
@@ -162,9 +163,11 @@
 		5738A60D76F5B706CB90C164 /* b2DynamicTree.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = b2DynamicTree.cpp; path = ../../../addons/ofxBox2d/libs/Box2D/Collision/b2DynamicTree.cpp; sourceTree = SOURCE_ROOT; };
 		59BF1B0E1461AAF080ECFA05 /* b2Rope.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = b2Rope.h; path = ../../../addons/ofxBox2d/libs/Box2D/Rope/b2Rope.h; sourceTree = SOURCE_ROOT; };
 		5C703FD5B2D1D10BAEE01BEA /* b2Island.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = b2Island.cpp; path = ../../../addons/ofxBox2d/libs/Box2D/Dynamics/b2Island.cpp; sourceTree = SOURCE_ROOT; };
+		5D76DC1BE4E3C649B9AB59E5 /* BoundScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = BoundScene.cpp; path = src/BoundScene.cpp; sourceTree = SOURCE_ROOT; };
 		61084035F9BAD2E934415139 /* b2DynamicTree.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = b2DynamicTree.h; path = ../../../addons/ofxBox2d/libs/Box2D/Collision/b2DynamicTree.h; sourceTree = SOURCE_ROOT; };
 		61313493CDB52744E22A604D /* json-forwards.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = "json-forwards.h"; path = "../../../addons/ofxJSON/libs/jsoncpp/include/json/json-forwards.h"; sourceTree = SOURCE_ROOT; };
 		61D086EE2A0E4D5226F21412 /* b2StackAllocator.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = b2StackAllocator.h; path = ../../../addons/ofxBox2d/libs/Box2D/Common/b2StackAllocator.h; sourceTree = SOURCE_ROOT; };
+		62C903CD0B3EA9BCA5AAF111 /* BoundScene.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = BoundScene.hpp; path = src/BoundScene.hpp; sourceTree = SOURCE_ROOT; };
 		63A47AC60FFAFC3BF093EC0F /* OscOutboundPacketStream.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = OscOutboundPacketStream.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscOutboundPacketStream.cpp; sourceTree = SOURCE_ROOT; };
 		63A6DE8917910BA8F1C7CC40 /* Box2D.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Box2D.h; path = ../../../addons/ofxBox2d/libs/Box2D/Box2D.h; sourceTree = SOURCE_ROOT; };
 		65EEFA3DA3526E9CDD9C21F9 /* ofxOscBundle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxOscBundle.cpp; path = ../../../addons/ofxOsc/src/ofxOscBundle.cpp; sourceTree = SOURCE_ROOT; };
@@ -1163,12 +1166,14 @@
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				F8FF2ACAE7AE4BDC97D2C92C /* Ball.hpp */,
 				8BB0CB3B08106D2E318F33E0 /* Ball.cpp */,
+				7EB889EE857363399FD071EE /* RectShape.hpp */,
+				8B440FCFDD23CCB49D5F228C /* RectShape.cpp */,
 				F39575046E7B7E82D2BCED4E /* CircleShape.hpp */,
 				81B7C790EAFD705D1CFBB78A /* CircleShape.cpp */,
 				AB6986DCED631468B948AC59 /* TrianglePolyShape.hpp */,
 				ED052FE64523297008A28561 /* TrianglePolyShape.cpp */,
-				7EB889EE857363399FD071EE /* RectShape.hpp */,
-				8B440FCFDD23CCB49D5F228C /* RectShape.cpp */,
+				62C903CD0B3EA9BCA5AAF111 /* BoundScene.hpp */,
+				5D76DC1BE4E3C649B9AB59E5 /* BoundScene.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1326,6 +1331,7 @@
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				C46053531CA327C166F93B33 /* TrianglePolyShape.cpp in Sources */,
 				44B4F1634F335F42435A87A6 /* CircleShape.cpp in Sources */,
+				5E28D53D47744DED2DF5AC5F /* BoundScene.cpp in Sources */,
 				710A1B2D57A81D7CAF2F02D6 /* RectShape.cpp in Sources */,
 				0E602E4ACBDC3B86A6ACAA0E /* Ball.cpp in Sources */,
 				453D704CD216672147B2EEC2 /* b2ChainShape.cpp in Sources */,

@@ -3,12 +3,23 @@
 static bool shouldRemove(shared_ptr<ofxBox2dBaseShape>shape) {
     return !ofRectangle(0, -400, ofGetWidth(), ofGetHeight()+400).inside(shape->getPosition());
 }
+template<class T> void shuffle(T ary[],int size)
+{
+    for(int i=0;i<size;i++)
+    {
+        int j = rand()%size;
+        T t = ary[i];
+        ary[i] = ary[j];
+        ary[j] = t;
+    }
+}
 
 //--------------------------------------------------------------
 void ofApp::setup(){
     
 //    ofBackground(bgColor[0]);
     ofBackgroundHex(0xEEEEEE);
+    ofSetVerticalSync(true);
     
     //カラーの登録
     colors[0].setHex(0xEA4599); //ピンク
@@ -23,8 +34,10 @@ void ofApp::setup(){
     bgColor[1].setHex(0xE6F2FF);
     bgColor[2].setHex(0xFDEFC2);
     
-    ofSetVerticalSync(true);
+    
 //    ofSetLogLevel(OF_LOG_NOTICE);
+    
+
     
     
     // JSON読み込み ----------------------------
@@ -93,7 +106,7 @@ void ofApp::update(){
             sender.sendMessage(msg);
             //シェイプの落下
 //            setScene();
-            sc06();
+            sc01();
             //ボールの値をリセット
             b.get()->reset();
         }
@@ -103,7 +116,6 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
     //ボールの描画
     for(auto & b : balls) {
         b->display();
@@ -175,26 +187,30 @@ void ofApp::setScene(){
 //--------------------------------------------------------------
 
 void ofApp::sc01(){
-    int colorNum = ofRandom(0, sizeof(colors));
-    int dotLength = json["alphabets"][0]["pos"].size();
-    for (int i=0; i<dotLength; i++) {
-        shared_ptr<CircleShape> c = make_shared<CircleShape>();
+    
+    shuffle<int>(sNum,6);
+    int colorNum0 = sNum[1];
+    
+    int startX = 50;
+    int startY = 50;
+    int h = 7;
+    for (int i=0; i<json["alphabets"][h]["pos"].size(); i++) {
+        shared_ptr<TrianglePolyShape> r = make_shared<TrianglePolyShape>();
         ofVec2f pos;
-        pos.x = json["alphabets"][0]["pos"][i]["x"].asInt();
-        pos.y = json["alphabets"][0]["pos"][i]["y"].asInt();
-        c.get()->setupShape(&box2d, pos.x/2, pos.y/2, 16, &colors[colorNum], &sound[1]);
-        c.get()->setData(new SoundData());
-//        SoundData * sd = (SoundData*)c.get()->getData();
-//        sd->soundID = ofRandom(0, N_SOUNDS);
-//        sd->bHit    = false;
-        circles.push_back(c);
+        pos.x = json["alphabets"][h]["pos"][i]["x"].asInt();
+        pos.y = json["alphabets"][h]["pos"][i]["y"].asInt();
+//        r.get()->setupShape(&box2d, pos.x/2, pos.y/2, 32, &colors[colorNum0], &sound[1]);
+        r.get()->setupShape(&box2d,startX +  pos.x/2, startY + pos.y/2, 24, 3, &colors[colorNum0], &sound[0]);
+        r.get()->setData(new SoundData());
+        triangles.push_back(r);
     }
 }
 
 void ofApp::sc02(){
     // 四角形が並ぶ -----------------------
-    int colorNum0 = 1;
-    int colorNum1 = 4;
+    shuffle<int>(sNum,6);
+    int colorNum0 = sNum[1];
+    int colorNum1 = sNum[2];
     float splitNum = width/7;
     shared_ptr<RectShape> r1 = make_shared<RectShape>();
     r1.get()->setupShape(&box2d, width/2 - splitNum*3, 50, 10, &colors[colorNum0], &sound[0]);
@@ -222,15 +238,9 @@ void ofApp::sc02(){
 
 void ofApp::sc03(){
     //三角旗-----------------------
-    vector<int> v(6);
-    iota(v.begin(), v.end(), 0); // 0～5 までの値を生成
-    std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout));
-    std::random_device seed_gen;
-    std::mt19937 engine(seed_gen());
-    std::shuffle(v.begin(), v.end(), engine);
-    std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout));
-    int colorNum0 = v[1];
-    int colorNum1 = v[2];
+    shuffle<int>(sNum,6);
+    int colorNum0 = sNum[1];
+    int colorNum1 = sNum[2];
     ofVec2f startPos;
     ofVec2f pos;
     startPos.x = ofRandom(shapeMinArea.x+100,shapeMaxArea.x-100);
@@ -267,16 +277,10 @@ void ofApp::sc03(){
 
 void ofApp::sc04(){
     // サークル -------------------------------------------
-    vector<int> v(6);
-    iota(v.begin(), v.end(), 0); // 0～5 までの値を生成
-    std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout));
-    std::random_device seed_gen;
-    std::mt19937 engine(seed_gen());
-    std::shuffle(v.begin(), v.end(), engine);
-    std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout));
-    int colorNum0 = v[1];
-    int colorNum1 = v[2];
-    int colorNum2 = v[3];
+    shuffle<int>(sNum,6);
+    int colorNum0 = sNum[1];
+    int colorNum1 = sNum[2];
+    int colorNum2 = sNum[3];
     int r1 = 180;
     int r2 = 120;
     int r3 = 60;
@@ -310,13 +314,7 @@ void ofApp::sc04(){
 
 void ofApp::sc05(){
     // ウェーブ -------------------------------------------
-    vector<int> v(6);
-    iota(v.begin(), v.end(), 0); // 0～5 までの値を生成
-    std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout));
-    std::random_device seed_gen;
-    std::mt19937 engine(seed_gen());
-    std::shuffle(v.begin(), v.end(), engine);
-    std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout));
+    shuffle<int>(sNum,6);
     int colorNum, cRadius;
     int r = 140;
     int theta = (int)ofRandom(0,60);
@@ -327,13 +325,13 @@ void ofApp::sc05(){
         shared_ptr<CircleShape> c = make_shared<CircleShape>();
         int cnt = 0;
         if(i % 3 == 0){
-            colorNum = v[1];
+            colorNum = sNum[1];
             cRadius = 8;
         } else if(i % 3 == 1){
-            colorNum = v[2];
+            colorNum = sNum[2];
             cRadius = 12;
         } else {
-            colorNum = v[3];
+            colorNum = sNum[3];
             cRadius = 16;
         }
         c.get()->setupShape(&box2d, pos.x, pos.y, cRadius, &colors[colorNum], &sound[1]);
@@ -344,29 +342,89 @@ void ofApp::sc05(){
 
 void ofApp::sc06(){
     // 3つのシェイプ -------------------------------------------
-    vector<int> v(6);
-    iota(v.begin(), v.end(), 0); // 0～5 までの値を生成
-    std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout));
-    std::random_device seed_gen;
-    std::mt19937 engine(seed_gen());
-    std::shuffle(v.begin(), v.end(), engine);
-    std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout));
-    int colorNum0 = v[1];
-    int colorNum1 = v[2];
-    int colorNum2 = v[3];
+    shuffle<int>(sNum,6);
+    int colorNum0 = sNum[1];
+    int colorNum1 = sNum[2];
+    int colorNum2 = sNum[3];
     shared_ptr<TrianglePolyShape> t1 = make_shared<TrianglePolyShape>();
     t1.get()->setupShape(&box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(150,300), 4, &colors[colorNum0], &sound[0]);
     triangles.push_back(t1);
     shared_ptr<TrianglePolyShape> t2 = make_shared<TrianglePolyShape>();
     t2.get()->setupShape(&box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(150,300), 3, &colors[colorNum1], &sound[0]);
     triangles.push_back(t2);
+    shared_ptr<TrianglePolyShape> t3 = make_shared<TrianglePolyShape>();
+    t3.get()->setupShape(&box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(150,300), 5, &colors[colorNum2], &sound[0]);
+    triangles.push_back(t3);
     ofRemove(triangles, shouldRemove);
-    shared_ptr<CircleShape> c = make_shared<CircleShape>();
-    c.get()->setupShape(&box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(50,150), &colors[colorNum2], &sound[1]);
-    circles.push_back(c);
+//    shared_ptr<CircleShape> c = make_shared<CircleShape>();
+//    c.get()->setupShape(&box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(50,150), &colors[colorNum2], &sound[1]);
+//    circles.push_back(c);
     ofRemove(circles, shouldRemove);
 }
 
+void ofApp::sc07(){
+    int colorNum = ofRandom(0, sizeof(colors));
+    int dotLength = json["alphabets"][0]["pos"].size();
+    for (int i=0; i<dotLength; i++) {
+        shared_ptr<CircleShape> c = make_shared<CircleShape>();
+        ofVec2f pos;
+        pos.x = json["alphabets"][0]["pos"][i]["x"].asInt();
+        pos.y = json["alphabets"][0]["pos"][i]["y"].asInt();
+        c.get()->setupShape(&box2d, pos.x/2, pos.y/2, 16, &colors[colorNum], &sound[1]);
+        c.get()->setData(new SoundData());
+        //        SoundData * sd = (SoundData*)c.get()->getData();
+        //        sd->soundID = ofRandom(0, N_SOUNDS);
+        //        sd->bHit    = false;
+        circles.push_back(c);
+    }
+}
+
+
+
+//void ofApp::sc10(){
+//    //三角旗-----------------------
+//    shuffle<int>(sNum,6);
+//    int colorNum0 = sNum[1];
+//    int colorNum1 = sNum[2];
+//    ofVec2f startPos;
+//    ofVec2f pos;
+//    startPos.x = ofRandom(shapeMinArea.x+100, shapeMaxArea.x-100);
+//    startPos.y = ofRandom(shapeMinArea.y, shapeMaxArea.y);
+//    int tr = 32;
+//    int trm = tr*2.2;
+//    
+//    
+//    for (int i=0; i<2; i++) {
+//        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+//        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 96, startPos.y - trm - 96, tr, 4, &colors[colorNum0], &sound[0]);
+//        triangles.push_back(t);
+//    }
+//    for (int i=0; i<3; i++) {
+//        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+//        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 64, startPos.y - trm - 40, tr, 4, &colors[colorNum0], &sound[0]);
+//        triangles.push_back(t);
+//    }
+//    for (int i=0; i<4; i++) {
+//        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+//        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 32, startPos.y - trm + 16, tr, 4, &colors[colorNum0], &sound[0]);
+//        triangles.push_back(t);
+//    }
+//    for (int i=0; i<5; i++) {
+//        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+//        t.get()->setupShape(&box2d, startPos.x + trm * i, startPos.y, tr, 4, &colors[colorNum0], &sound[0]);
+//        triangles.push_back(t);
+//    }
+//    for (int i=0; i<4; i++) {
+//        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+//        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 32, startPos.y + trm - 16, tr, 4, &colors[colorNum0], &sound[0]);
+//        triangles.push_back(t);
+//    }
+//    for (int i=0; i<3; i++) {
+//        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+//        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 64, startPos.y + trm + 40, tr, 4, &colors[colorNum0], &sound[0]);
+//        triangles.push_back(t);
+//    }
+//}
 
 //
 //void ofApp::setCircles(){

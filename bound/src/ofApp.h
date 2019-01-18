@@ -10,7 +10,7 @@
 #include <numeric>
 #include <iterator>
 #include <random>
-
+#include<stdlib.h>
 
 #include "ofxOsc.h"
 #include "Ball.hpp"
@@ -65,7 +65,7 @@ class ofApp : public ofBaseApp{
         void sc07();
         void sc08();
         void sc09();
-    
+        void sc10();
     
     // p5 properties
     float width = ofGetWidth();
@@ -110,6 +110,6 @@ class ofApp : public ofBaseApp{
     int scene = 0;
     ofColor *colors = new ofColor[6];
     ofColor *bgColor = new ofColor[3];
-    
+    int sNum[6]={0,1,2,3,4,5};
     
 };

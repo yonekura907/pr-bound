@@ -97,15 +97,7 @@ void ofApp::keyPressed(int key){
     bScene->keyPressed(key);
     
     
-//    if(key == 'c') {
-////        circles.clear();
-//    }
-//    if(key == 't') {
-////        triangles.clear();
-//    }
-//    if(key == 'r') {
-////        rects.clear();
-//    }
+
 }
 
 

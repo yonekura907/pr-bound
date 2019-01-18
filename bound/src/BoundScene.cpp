@@ -341,26 +341,8 @@ void BoundScene::sc06(){
 
 }
 
-    
-    
-void BoundScene::sc07(){
-    int colorNum = ofRandom(0, sizeof(colors));
-    int dotLength = json["alphabets"][0]["pos"].size();
-    for (int i=0; i<dotLength; i++) {
-        shared_ptr<CircleShape> c = make_shared<CircleShape>();
-        ofVec2f pos;
-        pos.x = json["alphabets"][0]["pos"][i]["x"].asInt();
-        pos.y = json["alphabets"][0]["pos"][i]["y"].asInt();
-        c.get()->setupShape(box2d, pos.x/2, pos.y/2, 16, &colors[colorNum], &sound[1]);
-        c.get()->setData(new SoundData());
-        //        SoundData * sd = (SoundData*)c.get()->getData();
-        //        sd->soundID = ofRandom(0, N_SOUNDS);
-        //        sd->bHit    = false;
-        circles.push_back(c);
-    }
-}
 
-void BoundScene::sc08(){
+void BoundScene::sc07(){
 //    shuffle<int>(sNum,6);
 //    int colorNum0 = sNum[0];
 //    int colorNum1 = sNum[1];

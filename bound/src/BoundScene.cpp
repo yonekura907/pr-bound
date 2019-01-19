@@ -52,7 +52,7 @@ void BoundScene::setup(){
     }
     
     //Box2dの地面
-    ground = new Ground(box2d);
+    ground = make_unique<Ground>(box2d);
     ground->setup();
 
     //シェイプの描画範囲

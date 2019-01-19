@@ -46,7 +46,7 @@ class ofApp : public ofBaseApp{
     ofVec2f ballPos;
     
     // シェイプのアニメーションクラス
-    BoundScene* bScene;
+    unique_ptr<BoundScene> bScene;
 
     int noteNum;
     int midiNum[22] = {48,50,52,53,55,57,59,60,62,64,65,67,69,71,72,74,76,77,79,81,83,84};

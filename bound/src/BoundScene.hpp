@@ -64,7 +64,7 @@ public:
     ofxBox2d *box2d;
     
     //地面
-    Ground* ground;
+    unique_ptr<Ground> ground;
     
     //落下シェイプ
     ofVec2f shapeMinArea, shapeMaxArea;

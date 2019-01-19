@@ -28,7 +28,7 @@ public:
     ofVec2f pos; //ボールの座標
     float refPosY; //地面までの値 Y座標を反転
     float maxPosY; //ball高さのの最大値　この値が音階としてOSC送信される
-    
+    float lastPosY = 0;
     float velocity = 0.0;
     float lastVelocity = 0.0;
     int accelerationCount = 0;

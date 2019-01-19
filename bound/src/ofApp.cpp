@@ -3,7 +3,12 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    
     ofSetWindowShape(1280, 800);
+    
+    //フルスクリーン
+//    ofSetFullscreen(true);
+    
     ofBackgroundHex(0xFFFFFF);
     ofSetVerticalSync(true);
 //    ofSetLogLevel(OF_LOG_NOTICE);

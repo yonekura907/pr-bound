@@ -11,7 +11,7 @@ void CircleShape::setupShape(ofxBox2d *world, float x, float y, float radius, of
     pos.x = x;
     pos.y = y;
     selfRadius = radius;
-    setPhysics(1.0, 0.5, 0.1);
+    setPhysics(1.4, 0.8, 0.2);
     setup(world->getWorld(), pos.x, pos.y, selfRadius);
     
     selfColor = col;

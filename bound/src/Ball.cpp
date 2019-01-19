@@ -29,7 +29,7 @@ void Ball::updateBall(float x, float y){
     //ボールの速度を保存
     velocity = getVelocity().y;
 //    cout << "velocity" << velocity << endl;
-    //速度を前回の状態と比較
+//    速度を前回の状態と比較
     if(velocity != lastVelocity){
         //前回との差分
         float diff =  lastVelocity - velocity;
@@ -39,11 +39,21 @@ void Ball::updateBall(float x, float y){
             isBound = true;
         }
     }
-    //1フレーム前の速度を保存
+//    if(pos.y != lastPosY){
+//        //前回との差分
+//        float diff =  lastPosY - pos.y;
+//        //指定の差分以下なら
+//        if(diff > diffVal && maxPosY > ofGetHeight()/2){
+//            accelerationCount ++;
+//            isBound = true;
+//        }
+//    }
+//    //1フレーム前の速度を保存
     lastVelocity = velocity;
+    lastPosY = pos.y;
     //地面までの値
     refPosY = (ofGetHeight()-radius) - pos.y;
-    //    cout << "refPosY: " << refPosY << endl;
+//        cout << "maxPosY: " << maxPosY << endl;
     
     if(isBound == false){
         if(refPosY > maxPosY){

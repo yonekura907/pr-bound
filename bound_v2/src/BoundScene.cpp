@@ -92,13 +92,15 @@ void BoundScene::draw(){
 void BoundScene::keyPressed(int key){
     if(key == 'c') {
         circles.clear();
-    }
-    if(key == 't') {
         triangles.clear();
-    }
-    if(key == 'r') {
         rects.clear();
     }
+//    if(key == 't') {
+//        
+//    }
+//    if(key == 'r') {
+//        
+//    }
 }
 
 

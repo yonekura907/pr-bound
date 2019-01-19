@@ -22,15 +22,12 @@ template<class T> void shuffle(T ary[],int size){
 
 //--------------------------------------------------------------
 BoundScene::BoundScene(ofxBox2d *world){
-//    cout << world << endl;
+    //    cout << world << endl;
     box2d = world;
-    
 }
 
 //--------------------------------------------------------------
-
 void BoundScene::setup(){
-    
     //カラーの登録
     colors[0].setHex(0xEA4599); //ピンク
     colors[1].setHex(0xF69629); //オレンジ
@@ -40,9 +37,9 @@ void BoundScene::setup(){
     colors[5].setHex(0x4264D7); //ブルー
     
     
-//    bgColor[0].setHex(0xEEEEEE);
-//    bgColor[1].setHex(0xE6F2FF);
-//    bgColor[2].setHex(0xFDEFC2);
+    //    bgColor[0].setHex(0xEEEEEE);
+    //    bgColor[1].setHex(0xE6F2FF);
+    //    bgColor[2].setHex(0xFDEFC2);
     
     // JSON読み込み ----------------------------
     string file = "dots.json";
@@ -54,13 +51,13 @@ void BoundScene::setup(){
     //Box2dの地面
     ground = make_unique<Ground>(box2d);
     ground->setup();
-
+    
     //シェイプの描画範囲
     shapeMinArea.x = 50;
     shapeMinArea.y = 50;
     shapeMaxArea.x = ofGetWidth()-50;
     shapeMaxArea.y = ofGetHeight()/2;
-
+    
     // サウンドファイルの読み込み
     for(int i=0; i<N_SOUNDS; i++) {
         sound[i].load("sfx/"+ofToString(i)+".mp3");
@@ -75,7 +72,6 @@ void BoundScene::update(){
     setScene();
 }
 
-
 //--------------------------------------------------------------
 void BoundScene::draw(){
     //シェイプの描画
@@ -88,29 +84,32 @@ void BoundScene::draw(){
     for(auto & t : triangles) {
         t->display();
     }
-    
     //Groundクラスのdraw
     ground->draw();
 }
 
-//--------------------------------------------------------------
+
 void BoundScene::keyPressed(int key){
     if(key == 'c') {
         circles.clear();
         triangles.clear();
         rects.clear();
     }
-    if(key == 't') {}
-    if(key == 'r') {}
+    //    if(key == 't') {
+    //
+    //    }
+    //    if(key == 'r') {
+    //
+    //    }
 }
 
 
 //--------------------------------------------------------------
 void BoundScene::setScene(){
-//    sc01();
+    //    sc07();
     //シーンをランダムで選ぶ
-    scene = (int)ofRandom(1,8);
-//    cout << "scnen" << scene << endl;
+    scene = (int)ofRandom(0,8);
+    cout << "scnen" << scene << endl;
     switch (scene) {
         case 1:
             sc01();
@@ -143,6 +142,8 @@ void BoundScene::setScene(){
             break;
     }
 }
+
+//--------------------------------------------------------------
 
 //--------------------------------------------------------------
 void BoundScene::sc01(){

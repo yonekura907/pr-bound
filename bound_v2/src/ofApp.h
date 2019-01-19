@@ -4,7 +4,6 @@
 #include "ofxOpenCv.h"
 #include "ofxKinectV2.h"
 #include "ofxGui.h"
-
 #include "ofxJSON.h"
 #include<stdlib.h>
 #include "ofxOsc.h"
@@ -90,16 +89,14 @@ public:
     // box2d world
     ofxBox2d box2d;
     
-    //地面
-    ofPolyline groundLine;
-    
+    //ボールのクラス
     vector <shared_ptr<Ball> > balls;
+    //ボールの座標
     ofVec2f ballPos;
     
     // シェイプのアニメーションクラス
-    BoundScene* bScene;
+    unique_ptr<BoundScene> bScene;
     
     int noteNum;
     int midiNum[22] = {48,50,52,53,55,57,59,60,62,64,65,67,69,71,72,74,76,77,79,81,83,84};
-
 };

@@ -2,10 +2,8 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    
     ofSetWindowShape(1280, 800);
-    //    ofBackground(bgColor[0]);
-    ofBackgroundHex(0xEEEEEE);
+    ofBackgroundHex(0xFFFFFF);
     ofSetVerticalSync(true);
     //    ofSetLogLevel(OF_LOG_NOTICE);
     
@@ -19,29 +17,17 @@ void ofApp::setup(){
     box2d.setFPS(60.0);
     box2d.registerGrabbing(); //本番では外す　オブジェクトを掴めるように
     
-    //Box2dの地面
-    box2d.createGround(0, ofGetHeight()-1, ofGetWidth(), ofGetHeight()-1);
-    groundLine.addVertex(0, ofGetHeight());
-    groundLine.addVertex(ofGetWidth(), ofGetHeight());
+    //シーンクラスの生成
+    bScene = make_unique<BoundScene>(&box2d);
+    bScene->setup();
     
     //ボールの生成
     auto b = std::make_shared<Ball>();
     b.get()->setupBall(ofGetWidth()/2, ofGetHeight()/2, &box2d);
     ballPos.set(ofGetWidth()/2,ofGetHeight()/2);
     balls.push_back(b);
-    
-    
-    //シーンクラスの生成
-    bScene = new BoundScene(&box2d);
-    bScene->setup();
-    
-    
-    
-    
-    
-    
-    
-    
+
+
     //see how many devices we have.
     ofxKinectV2 tmp;
     vector <ofxKinectV2::KinectDeviceInfo> deviceList = tmp.getDeviceList();
@@ -147,33 +133,23 @@ void ofApp::update(){
     // ballPosの更新
     ballPos = pos;
     
-    
-    
-    
-    
-    
     // ボールの落下
     for(auto & b : balls) {
-        
         //ボールの値の更新kinectの値を入れる
         b->updateBall(ballPos.x, ballPos.y);
-        
         // アドレスを設定
         //        ofxOscMessage msg;
         //        msg.setAddress("/ballDown");
         //        cout << "noteNum: " << noteNum << endl;
         //        cout << "accelerationCount: " << b->accelerationCount << endl;
-        
         //ここはkinectでは消してください
         if(b->accelerationCount >= 1){
             //            msg.addIntArg(b->accelerationCount);
             // OSC送信
             //            sender.sendMessage(msg);
-            
             //シェイプの落下 --------------------
             //シーンクラスのupdateここはkinectでも必要
             bScene->update();
-            
             //ボールの値をリセット
 //            b.get()->reset(); //ここはkinectでは消してください
         }
@@ -184,7 +160,6 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    
     //ボールの描画
     for(auto & b : balls) {
         b->display();
@@ -192,13 +167,6 @@ void ofApp::draw(){
     
     //シーンクラスのdraw
     bScene->draw();
-    
-    //地面の描画　確認用
-    //    ofSetHexColor(0xFFFFFF);
-    //    groundLine.draw();
-    
-    
-    
     
 //    //取り込んだ画像を表示
 //    ofDrawRectangle(0, 0, displaySize.x, displaySize.y);
@@ -245,15 +213,14 @@ void ofApp::keyPressed(int key){
             break;
     }
     
-    
-    
+    // Bを押すとボールが戻ってくる
     if(key == 'b') {
         balls.clear();
         auto b = std::make_shared<Ball>();
         b.get()->setupBall(ofGetWidth()/2, ofGetHeight()/2, &box2d);
         balls.push_back(b);
     }
-    
+    // Cを押すとシェイプがクリア
     bScene->keyPressed(key);
 }
 

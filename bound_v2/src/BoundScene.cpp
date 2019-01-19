@@ -20,20 +20,21 @@ template<class T> void shuffle(T ary[],int size){
     }
 }
 
+//--------------------------------------------------------------
 BoundScene::BoundScene(ofxBox2d *world){
-    cout << world << endl;
+//    cout << world << endl;
     box2d = world;
-    
 }
 
+//--------------------------------------------------------------
 void BoundScene::setup(){
     //カラーの登録
     colors[0].setHex(0xEA4599); //ピンク
-    colors[1].setHex(0xEDA149); //オレンジ
-    colors[2].setHex(0xEDDE49); //イエロー2
-    colors[3].setHex(0x82BC4B); //グリーン
+    colors[1].setHex(0xF69629); //オレンジ
+    colors[2].setHex(0xF6E336); //イエロー
+    colors[3].setHex(0x8FCD54); //グリーン
     colors[4].setHex(0x51C6D5); //ターコイズ
-    colors[5].setHex(0x5470D0); //ブルー
+    colors[5].setHex(0x4264D7); //ブルー
     
     
 //    bgColor[0].setHex(0xEEEEEE);
@@ -46,6 +47,10 @@ void BoundScene::setup(){
     if (!success){
         cout << "Failed to parse JSON" << endl;
     }
+    
+    //Box2dの地面
+    ground = make_unique<Ground>(box2d);
+    ground->setup();
 
     //シェイプの描画範囲
     shapeMinArea.x = 50;
@@ -53,20 +58,21 @@ void BoundScene::setup(){
     shapeMaxArea.x = ofGetWidth()-50;
     shapeMaxArea.y = ofGetHeight()/2;
 
-//    // サウンドファイルの読み込み
-//    for(int i=0; i<N_SOUNDS; i++) {
-//        sound[i].load("sfx/"+ofToString(i)+".mp3");
-//        sound[i].setMultiPlay(true);
-//        sound[i].setLoop(false);
-//    }
+    // サウンドファイルの読み込み
+    for(int i=0; i<N_SOUNDS; i++) {
+        sound[i].load("sfx/"+ofToString(i)+".mp3");
+        sound[i].setMultiPlay(true);
+        sound[i].setLoop(false);
+    }
 }
 
-
+//--------------------------------------------------------------
 void BoundScene::update(){
     //シェイプの落下
     setScene();
 }
 
+//--------------------------------------------------------------
 void BoundScene::draw(){
     //シェイプの描画
     for(auto & c : circles) {
@@ -78,6 +84,8 @@ void BoundScene::draw(){
     for(auto & t : triangles) {
         t->display();
     }
+    //Groundクラスのdraw
+    ground->draw();
 }
 
 
@@ -98,7 +106,7 @@ void BoundScene::keyPressed(int key){
 void BoundScene::setScene(){
 //    sc07();
     //シーンをランダムで選ぶ
-    scene = (int)ofRandom(1,6);
+    scene = (int)ofRandom(1,8);
     cout << "scnen" << scene << endl;
     switch (scene) {
         case 1:
@@ -116,7 +124,18 @@ void BoundScene::setScene(){
         case 5:
             sc05();
             break;
-
+        case 6:
+            sc06();
+            break;
+        case 7:
+            sc07();
+            break;
+        case 8:
+            sc08();
+            break;
+        case 9:
+            sc09();
+            break;
         default:
             break;
     }
@@ -124,14 +143,15 @@ void BoundScene::setScene(){
 
 //--------------------------------------------------------------
 
+//--------------------------------------------------------------
 void BoundScene::sc01(){
+    // Hello ----------------
     shuffle<int>(sNum,6);
     int colorNum0 = sNum[0];
     int colorNum1 = sNum[1];
     int colorNum2 = sNum[2];
     int colorNum3 = sNum[3];
     int colorNum4 = sNum[4];
-
     ofVec2f pos0;
     pos0.set(0,50);
     int h = 7;
@@ -186,10 +206,14 @@ void BoundScene::sc01(){
         t.get()->setupShape(box2d, pos4.x + pos.x/2, pos1.y + pos.y/2, 24, 5, &colors[colorNum4], &sound[0]);
         triangles.push_back(t);
     }
+    
+    sound[0].play();
 }
 
+
+//--------------------------------------------------------------
 void BoundScene::sc02(){
-    // 四角形が並ぶ -----------------------
+    // 四角形が並ぶ
     shuffle<int>(sNum,6);
     int colorNum0 = sNum[1];
     int colorNum1 = sNum[2];
@@ -216,8 +240,11 @@ void BoundScene::sc02(){
     r7.get()->setupShape(box2d, ofGetWidth()/2 + splitNum*3, 50, 200, &colors[colorNum0], &sound[0]);
     rects.push_back(r7);
     ofRemove(rects, shouldRemove);
+    sound[7].play();
 }
 
+
+//-------------------------------------------
 void BoundScene::sc03(){
     //三角旗-----------------------
     shuffle<int>(sNum,6);
@@ -255,10 +282,13 @@ void BoundScene::sc03(){
         triangles.push_back(t);
     }
     ofRemove(triangles, shouldRemove);
+    sound[8].play();
 }
 
+
+//--------------------------------------------------------------
 void BoundScene::sc04(){
-    // サークル -------------------------------------------
+    // サークル
     shuffle<int>(sNum,6);
     int colorNum0 = sNum[1];
     int colorNum1 = sNum[2];
@@ -292,8 +322,11 @@ void BoundScene::sc04(){
         circles.push_back(c);
     }
     ofRemove(circles, shouldRemove);
+    sound[3].play();
 }
 
+
+//--------------------------------------------------------------
 void BoundScene::sc05(){
     // ウェーブ -------------------------------------------
     shuffle<int>(sNum,6);
@@ -320,8 +353,11 @@ void BoundScene::sc05(){
         circles.push_back(c);
     }
     ofRemove(circles, shouldRemove);
+    sound[4].play();
 }
 
+
+//--------------------------------------------------------------
 void BoundScene::sc06(){
     // 3つのシェイプ -------------------------------------------
     shuffle<int>(sNum,6);
@@ -338,127 +374,133 @@ void BoundScene::sc06(){
     t3.get()->setupShape(box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(150,300), 5, &colors[colorNum2], &sound[0]);
     triangles.push_back(t3);
     ofRemove(triangles, shouldRemove);
-
+    sound[5].play();
 }
 
 
+//--------------------------------------------------------------
 void BoundScene::sc07(){
-//    shuffle<int>(sNum,6);
-//    int colorNum0 = sNum[0];
-//    int colorNum1 = sNum[1];
-//    int colorNum2 = sNum[2];
-//    int colorNum3 = sNum[3];
-//    int colorNum4 = sNum[4];
-//
-//    ofVec2f pos0;
-//    pos0.set(0,50);
-//    int b = 1;
-//    for (int i=0; i<json["alphabets"][b]["pos"].size(); i++) {
-//        shared_ptr<CircleShape> t = make_shared<CircleShape>();
-//        ofVec2f pos;
-//        pos.x = json["alphabets"][b]["pos"][i]["x"].asInt();
-//        pos.y = json["alphabets"][b]["pos"][i]["y"].asInt();
-//        t.get()->setupShape(&box2d, pos0.x + pos.x/2, pos0.y + pos.y/2, 24, &colors[colorNum0], &sound[0]);
-//        circles.push_back(t);
-//    }
-//    ofVec2f pos1;
-//    pos1.set(pos0.x + json["alphabets"][b]["width"].asInt()/2-30,50);
-//    int o = 14;
-//    for (int i=0; i<json["alphabets"][o]["pos"].size(); i++) {
-//        shared_ptr<CircleShape> t = make_shared<CircleShape>();
-//        ofVec2f pos;
-//        pos.x = json["alphabets"][o]["pos"][i]["x"].asInt();
-//        pos.y = json["alphabets"][o]["pos"][i]["y"].asInt();
-//        t.get()->setupShape(&box2d, pos1.x + pos.x/2, pos1.y + pos.y/2, 24, &colors[colorNum1], &sound[0]);
-//        circles.push_back(t);
-//    }
-//    ofVec2f pos2;
-//    pos2.set(pos2.x + json["alphabets"][o]["width"].asInt()/2-30,50);
-//    int u = 21;
-//    for (int i=0; i<json["alphabets"][u]["pos"].size(); i++) {
-//        shared_ptr<CircleShape> t = make_shared<CircleShape>();
-//        ofVec2f pos;
-//        pos.x = json["alphabets"][u]["pos"][i]["x"].asInt();
-//        pos.y = json["alphabets"][u]["pos"][i]["y"].asInt();
-//        t.get()->setupShape(&box2d, pos2.x + pos.x/2, pos1.y + pos.y/2, 24, &colors[colorNum2], &sound[0]);
-//        circles.push_back(t);
-//    }
-    //    ofVec2f pos3;
-    //    pos3.set(pos2.x + json["alphabets"][u]["width"].asInt()/2-30,50);
-    //    int n = 15;
-    //    for (int i=0; i<json["alphabets"][n]["pos"].size(); i++) {
-    //        shared_ptr<CircleShape> t = make_shared<CircleShape>();
-    //        ofVec2f pos;
-    //        pos.x = json["alphabets"][n]["pos"][i]["x"].asInt();
-    //        pos.y = json["alphabets"][n]["pos"][i]["y"].asInt();
-    //        t.get()->setupShape(&box2d, pos3.x + pos.x/2, pos1.y + pos.y/2, 24, &colors[colorNum3], &sound[0]);
-    //        circles.push_back(t);
-    //    }
-    //    ofVec2f pos4;
-    //    pos4.set(pos3.x + json["alphabets"][n]["width"].asInt()/2-30,50);
-    //    int d = 14;
-    //    for (int i=0; i<json["alphabets"][d]["pos"].size(); i++) {
-    //        shared_ptr<CircleShape> t = make_shared<CircleShape>();
-    //        ofVec2f pos;
-    //        pos.x = json["alphabets"][d]["pos"][i]["x"].asInt();
-    //        pos.y = json["alphabets"][d]["pos"][i]["y"].asInt();
-    //        t.get()->setupShape(&box2d, pos4.x + pos.x/2, pos1.y + pos.y/2, 24, &colors[colorNum4], &sound[0]);
-    //        circles.push_back(t);
-    //    }
+    // Bound
+    shuffle<int>(sNum,6);
+    int colorNum0 = sNum[0];
+    int colorNum1 = sNum[1];
+    int colorNum2 = sNum[2];
+    int colorNum3 = sNum[3];
+    int colorNum4 = sNum[4];
+    int scale = 2.8;
+    int kerning = 50;
+    int radius = 18;
+    ofVec2f pos0;
+    pos0.set(ofGetWidth()/2 - 640,40);
+    int b = 1;
+    for (int i=0; i<json["alphabets"][b]["pos"].size(); i++) {
+        shared_ptr<CircleShape> t = make_shared<CircleShape>();
+        ofVec2f pos;
+        pos.x = json["alphabets"][b]["pos"][i]["x"].asInt();
+        pos.y = json["alphabets"][b]["pos"][i]["y"].asInt();
+        t.get()->setupShape(box2d, pos0.x + pos.x/scale, pos0.y + pos.y/scale, radius, &colors[colorNum0], &sound[0]);
+        circles.push_back(t);
+    }
+    ofVec2f pos1;
+    pos1.set(pos0.x + json["alphabets"][b]["width"].asInt()/scale-kerning,pos0.y);
+    int o = 14;
+    for (int i=0; i<json["alphabets"][o]["pos"].size(); i++) {
+        shared_ptr<CircleShape> t = make_shared<CircleShape>();
+        ofVec2f pos;
+        pos.x = json["alphabets"][o]["pos"][i]["x"].asInt();
+        pos.y = json["alphabets"][o]["pos"][i]["y"].asInt();
+        t.get()->setupShape(box2d, pos1.x + pos.x/scale, pos1.y + pos.y/scale, radius, &colors[colorNum1], &sound[0]);
+        circles.push_back(t);
+    }
+    ofVec2f pos2;
+    pos2.set(pos1.x + json["alphabets"][o]["width"].asInt()/scale-kerning,pos0.y);
+    int u = 20;
+    for (int i=0; i<json["alphabets"][u]["pos"].size(); i++) {
+        shared_ptr<CircleShape> t = make_shared<CircleShape>();
+        ofVec2f pos;
+        pos.x = json["alphabets"][u]["pos"][i]["x"].asInt();
+        pos.y = json["alphabets"][u]["pos"][i]["y"].asInt();
+        t.get()->setupShape(box2d, pos2.x + pos.x/scale, pos1.y + pos.y/scale, radius, &colors[colorNum2], &sound[0]);
+        circles.push_back(t);
+    }
+    ofVec2f pos3;
+    pos3.set(pos2.x + json["alphabets"][u]["width"].asInt()/scale-kerning,pos0.y);
+    int n = 13;
+    for (int i=0; i<json["alphabets"][n]["pos"].size(); i++) {
+        shared_ptr<CircleShape> t = make_shared<CircleShape>();
+        ofVec2f pos;
+        pos.x = json["alphabets"][n]["pos"][i]["x"].asInt();
+        pos.y = json["alphabets"][n]["pos"][i]["y"].asInt();
+        t.get()->setupShape(box2d, pos3.x + pos.x/scale, pos1.y + pos.y/scale, radius, &colors[colorNum3], &sound[0]);
+        circles.push_back(t);
+    }
+    ofVec2f pos4;
+    pos4.set(pos3.x + json["alphabets"][n]["width"].asInt()/scale-kerning,pos0.y);
+    int d = 3;
+    for (int i=0; i<json["alphabets"][d]["pos"].size(); i++) {
+        shared_ptr<CircleShape> t = make_shared<CircleShape>();
+        ofVec2f pos;
+        pos.x = json["alphabets"][d]["pos"][i]["x"].asInt();
+        pos.y = json["alphabets"][d]["pos"][i]["y"].asInt();
+        t.get()->setupShape(box2d, pos4.x + pos.x/scale, pos1.y + pos.y/scale, 20, &colors[colorNum4], &sound[0]);
+        circles.push_back(t);
+    }
+    sound[6].play();
 }
-    
+
+//--------------------------------------------------------------
+void BoundScene::sc08(){
+}
+
+//--------------------------------------------------------------
 void BoundScene::sc09(){
-    
+    //    //三角旗-----------------------
+    //    shuffle<int>(sNum,6);
+    //    int colorNum0 = sNum[1];
+    //    int colorNum1 = sNum[2];
+    //    ofVec2f startPos;
+    //    ofVec2f pos;
+    //    startPos.x = ofRandom(shapeMinArea.x+100, shapeMaxArea.x-100);
+    //    startPos.y = ofRandom(shapeMinArea.y, shapeMaxArea.y);
+    //    int tr = 32;
+    //    int trm = tr*2.2;
+    //
+    //
+    //    for (int i=0; i<2; i++) {
+    //        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+    //        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 96, startPos.y - trm - 96, tr, 4, &colors[colorNum0], &sound[0]);
+    //        triangles.push_back(t);
+    //    }
+    //    for (int i=0; i<3; i++) {
+    //        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+    //        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 64, startPos.y - trm - 40, tr, 4, &colors[colorNum0], &sound[0]);
+    //        triangles.push_back(t);
+    //    }
+    //    for (int i=0; i<4; i++) {
+    //        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+    //        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 32, startPos.y - trm + 16, tr, 4, &colors[colorNum0], &sound[0]);
+    //        triangles.push_back(t);
+    //    }
+    //    for (int i=0; i<5; i++) {
+    //        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+    //        t.get()->setupShape(&box2d, startPos.x + trm * i, startPos.y, tr, 4, &colors[colorNum0], &sound[0]);
+    //        triangles.push_back(t);
+    //    }
+    //    for (int i=0; i<4; i++) {
+    //        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+    //        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 32, startPos.y + trm - 16, tr, 4, &colors[colorNum0], &sound[0]);
+    //        triangles.push_back(t);
+    //    }
+    //    for (int i=0; i<3; i++) {
+    //        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+    //        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 64, startPos.y + trm + 40, tr, 4, &colors[colorNum0], &sound[0]);
+    //        triangles.push_back(t);
+    //    }
 }
 
 
 
-//void BoundScene::sc10(){
-//    //三角旗-----------------------
-//    shuffle<int>(sNum,6);
-//    int colorNum0 = sNum[1];
-//    int colorNum1 = sNum[2];
-//    ofVec2f startPos;
-//    ofVec2f pos;
-//    startPos.x = ofRandom(shapeMinArea.x+100, shapeMaxArea.x-100);
-//    startPos.y = ofRandom(shapeMinArea.y, shapeMaxArea.y);
-//    int tr = 32;
-//    int trm = tr*2.2;
-//
-//
-//    for (int i=0; i<2; i++) {
-//        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-//        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 96, startPos.y - trm - 96, tr, 4, &colors[colorNum0], &sound[0]);
-//        triangles.push_back(t);
-//    }
-//    for (int i=0; i<3; i++) {
-//        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-//        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 64, startPos.y - trm - 40, tr, 4, &colors[colorNum0], &sound[0]);
-//        triangles.push_back(t);
-//    }
-//    for (int i=0; i<4; i++) {
-//        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-//        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 32, startPos.y - trm + 16, tr, 4, &colors[colorNum0], &sound[0]);
-//        triangles.push_back(t);
-//    }
-//    for (int i=0; i<5; i++) {
-//        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-//        t.get()->setupShape(&box2d, startPos.x + trm * i, startPos.y, tr, 4, &colors[colorNum0], &sound[0]);
-//        triangles.push_back(t);
-//    }
-//    for (int i=0; i<4; i++) {
-//        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-//        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 32, startPos.y + trm - 16, tr, 4, &colors[colorNum0], &sound[0]);
-//        triangles.push_back(t);
-//    }
-//    for (int i=0; i<3; i++) {
-//        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-//        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 64, startPos.y + trm + 40, tr, 4, &colors[colorNum0], &sound[0]);
-//        triangles.push_back(t);
-//    }
-//}
-
-//
+//--------------------------------------------------------------
 //void ofApp::setCircles(){
 ////    cout << "start circle" << endl;
 //    int r = 200;

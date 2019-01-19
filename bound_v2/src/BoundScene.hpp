@@ -22,9 +22,10 @@
 #include "RectShape.hpp"
 #include "CircleShape.hpp"
 #include "TrianglePolyShape.hpp"
+#include "Ground.hpp"
 #include "ofxJSON.h"
 
-#define N_SOUNDS 5
+#define N_SOUNDS 9
 class SoundData {
 public:
     int  soundID;
@@ -41,11 +42,8 @@ public:
     
     void keyPressed(int key);
     
-//    void setCircles();
-//    void setRects();
-//    void setTriangles();
-    
     void setScene();
+    
     void sc01();
     void sc02();
     void sc03();
@@ -55,13 +53,17 @@ public:
     void sc07();
     void sc08();
     void sc09();
-    void sc10();
     
     //JSON
     ofxJSONElement json;
     
     //box2d
     ofxBox2d *box2d;
+    
+    //地面
+    unique_ptr<Ground> ground;
+    
+    //落下シェイプ
     ofVec2f shapeMinArea, shapeMaxArea;
     vector <shared_ptr<CircleShape>> circles;
     vector <shared_ptr<RectShape>> rects;

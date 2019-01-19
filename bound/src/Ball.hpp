@@ -15,7 +15,6 @@
 
 class Ball: public ofxBox2dCircle {
 public:
-    
     void setupBall(int, int, ofxBox2d * world);
     void updateBall(float, float);
     void getBound();

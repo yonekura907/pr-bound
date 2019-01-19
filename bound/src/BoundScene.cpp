@@ -109,6 +109,7 @@ void BoundScene::setScene(){
     //    sc07();
     //シーンをランダムで選ぶ
     scene = (int)ofRandom(0,8);
+//    scene = 7;
     cout << "scnen" << scene << endl;
     switch (scene) {
         case 1:
@@ -242,7 +243,7 @@ void BoundScene::sc02(){
     r7.get()->setupShape(box2d, ofGetWidth()/2 + splitNum*3, 50, 200, &colors[colorNum0], &sound[0]);
     rects.push_back(r7);
     ofRemove(rects, shouldRemove);
-    sound[7].play();
+    sound[1].play();
 }
 
 
@@ -284,7 +285,7 @@ void BoundScene::sc03(){
         triangles.push_back(t);
     }
     ofRemove(triangles, shouldRemove);
-    sound[8].play();
+    sound[2].play();
 }
 
 
@@ -355,7 +356,7 @@ void BoundScene::sc05(){
         circles.push_back(c);
     }
     ofRemove(circles, shouldRemove);
-    sound[4].play();
+    sound[6].play();
 }
 
 
@@ -447,7 +448,7 @@ void BoundScene::sc07(){
         t.get()->setupShape(box2d, pos4.x + pos.x/scale, pos1.y + pos.y/scale, 20, &colors[colorNum4], &sound[0]);
         circles.push_back(t);
     }
-    sound[6].play();
+    sound[7].play();
 }
 
 //--------------------------------------------------------------

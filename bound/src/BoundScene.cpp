@@ -30,6 +30,7 @@ BoundScene::BoundScene(ofxBox2d *world){
 //--------------------------------------------------------------
 
 void BoundScene::setup(){
+    
     //カラーの登録
     colors[0].setHex(0xEA4599); //ピンク
     colors[1].setHex(0xF69629); //オレンジ
@@ -49,6 +50,10 @@ void BoundScene::setup(){
     if (!success){
         cout << "Failed to parse JSON" << endl;
     }
+    
+    //Box2dの地面
+    ground = new Ground(box2d);
+    ground->setup();
 
     //シェイプの描画範囲
     shapeMinArea.x = 50;
@@ -83,19 +88,20 @@ void BoundScene::draw(){
     for(auto & t : triangles) {
         t->display();
     }
+    
+    //Groundクラスのdraw
+    ground->draw();
 }
 
 //--------------------------------------------------------------
 void BoundScene::keyPressed(int key){
     if(key == 'c') {
         circles.clear();
-    }
-    if(key == 't') {
         triangles.clear();
-    }
-    if(key == 'r') {
         rects.clear();
     }
+    if(key == 't') {}
+    if(key == 'r') {}
 }
 
 
@@ -133,7 +139,6 @@ void BoundScene::setScene(){
         case 9:
             sc09();
             break;
-
         default:
             break;
     }

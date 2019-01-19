@@ -17,11 +17,12 @@
 #include <numeric>
 #include <iterator>
 #include <random>
-#include<stdlib.h>
+
 #include "ofxBox2d.h"
 #include "RectShape.hpp"
 #include "CircleShape.hpp"
 #include "TrianglePolyShape.hpp"
+#include "Ground.hpp"
 #include "ofxJSON.h"
 
 #define N_SOUNDS 9
@@ -38,7 +39,6 @@ public:
     void setup();
     void update();
     void draw();
-    
     void keyPressed(int key);
     
 //    void setCircles();
@@ -62,6 +62,11 @@ public:
     
     //box2d
     ofxBox2d *box2d;
+    
+    //地面
+    Ground* ground;
+    
+    //落下シェイプ
     ofVec2f shapeMinArea, shapeMaxArea;
     vector <shared_ptr<CircleShape>> circles;
     vector <shared_ptr<RectShape>> rects;
@@ -74,6 +79,7 @@ public:
     ofColor *colors = new ofColor[6];
     int sNum[6]={0,1,2,3,4,5};
     
+    //サウンド
     ofSoundPlayer sound[N_SOUNDS];
 
 };

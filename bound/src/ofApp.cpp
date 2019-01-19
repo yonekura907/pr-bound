@@ -18,32 +18,26 @@ void ofApp::setup(){
     box2d.setFPS(60.0);
     box2d.registerGrabbing(); //本番では外す　オブジェクトを掴めるように
     
-    //Box2dの地面
-    box2d.createGround(0, ofGetHeight()-1, ofGetWidth(), ofGetHeight()-1);
-    groundLine.addVertex(0, ofGetHeight());
-    groundLine.addVertex(ofGetWidth(), ofGetHeight());
+    //シーンクラスの生成
+    bScene = new BoundScene(&box2d);
+    bScene->setup();
     
     //ボールの生成
     auto b = std::make_shared<Ball>();
     b.get()->setupBall(ofGetWidth()/2, ofGetHeight()/2, &box2d);
     ballPos.set(ofGetWidth()/2,ofGetHeight()/2);
     balls.push_back(b);
-    
-    //シーンクラスの生成
-    bScene = new BoundScene(&box2d);
-    bScene->setup();
+
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
     // ボールの落下
     for(auto & b : balls) {
-        
         //ボールの値の更新kinectの値を入れる
         b->updateBall(ballPos.x, ballPos.y);
         
-        // OSCアドレスを設定 Maxに送る場合に使うかも
+        // OSCアドレスを設定 Maxに送る場合に使うかも--------------------
 //        ofxOscMessage msg;
 //        msg.setAddress("/ballDown");
 //        cout << "noteNum: " << noteNum << endl;
@@ -51,11 +45,11 @@ void ofApp::update(){
         
         //ここはkinectでは消してください
         if(b->accelerationCount >= 1){
-//            msg.addIntArg(b->accelerationCount);
             // OSC送信
+//            msg.addIntArg(b->accelerationCount);
 //            sender.sendMessage(msg);
             
-            //シェイプの落下 --------------------
+            //シェイプの落下 --------------------------------------
             //シーンクラスのupdateここはkinectでも必要
             bScene->update();
             
@@ -75,24 +69,20 @@ void ofApp::draw(){
     
     //シーンクラスのdraw
     bScene->draw();
-    
-    //地面の描画　確認用
-//    ofSetHexColor(0xFFFFFF);
-//    groundLine.draw();
 }
 
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    // Bを押すとボールが戻ってくる
     if(key == 'b') {
         balls.clear();
         auto b = std::make_shared<Ball>();
         b.get()->setupBall(ofGetWidth()/2, ofGetHeight()/2, &box2d);
         balls.push_back(b);
     }
-    
+    // Cを押すとシェイプがクリア
     bScene->keyPressed(key);
-
 }
 
 

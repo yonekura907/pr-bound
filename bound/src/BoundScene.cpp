@@ -70,6 +70,7 @@ void BoundScene::setup(){
 void BoundScene::update(){
     //シェイプの落下
     setScene();
+
 }
 
 //--------------------------------------------------------------
@@ -106,10 +107,9 @@ void BoundScene::keyPressed(int key){
 
 //--------------------------------------------------------------
 void BoundScene::setScene(){
-    //    sc07();
     //シーンをランダムで選ぶ
-    scene = (int)ofRandom(0,8);
-//    scene = 7;
+    scene = (int)ofRandom(1,8);
+//    scene = 3;
     cout << "scnen" << scene << endl;
     switch (scene) {
         case 1:
@@ -132,12 +132,6 @@ void BoundScene::setScene(){
             break;
         case 7:
             sc07();
-            break;
-        case 8:
-            sc08();
-            break;
-        case 9:
-            sc09();
             break;
         default:
             break;
@@ -209,39 +203,30 @@ void BoundScene::sc01(){
         t.get()->setupShape(box2d, pos4.x + pos.x/2, pos1.y + pos.y/2, 24, 5, &colors[colorNum4], &sound[0]);
         triangles.push_back(t);
     }
-    
     sound[0].play();
 }
 
 
 //--------------------------------------------------------------
 void BoundScene::sc02(){
-    // 四角形が並ぶ
+    // 丸・三角・四角
     shuffle<int>(sNum,6);
     int colorNum0 = sNum[1];
     int colorNum1 = sNum[2];
-    float splitNum = ofGetWidth()/7;
-    shared_ptr<RectShape> r1 = make_shared<RectShape>();
-    r1.get()->setupShape(box2d, ofGetWidth()/2 - splitNum*3, 50, 10, &colors[colorNum0], &sound[0]);
-    rects.push_back(r1);
-    shared_ptr<RectShape> r2 = make_shared<RectShape>();
-    r2.get()->setupShape(box2d, ofGetWidth()/2 - splitNum*2 , 50, 20, &colors[colorNum1], &sound[0]);
-    rects.push_back(r2);
-    shared_ptr<RectShape> r3 = make_shared<RectShape>();
-    r3.get()->setupShape(box2d, ofGetWidth()/2 - splitNum, 50, 40, &colors[colorNum0], &sound[0]);
-    rects.push_back(r3);
-    shared_ptr<RectShape> r4 = make_shared<RectShape>();
-    r4.get()->setupShape(box2d, ofGetWidth()/2 , 50, 80, &colors[colorNum1], &sound[0]);
-    rects.push_back(r4);
-    shared_ptr<RectShape> r5 = make_shared<RectShape>();
-    r5.get()->setupShape(box2d, ofGetWidth()/2 + splitNum, 50, 120, &colors[colorNum0], &sound[0]);
-    rects.push_back(r5);
-    shared_ptr<RectShape> r6 = make_shared<RectShape>();
-    r6.get()->setupShape(box2d, ofGetWidth()/2 + splitNum*2 , 50, 160, &colors[colorNum1], &sound[0]);
-    rects.push_back(r6);
-    shared_ptr<RectShape> r7 = make_shared<RectShape>();
-    r7.get()->setupShape(box2d, ofGetWidth()/2 + splitNum*3, 50, 200, &colors[colorNum0], &sound[0]);
-    rects.push_back(r7);
+    int colorNum2 = sNum[3];
+    shared_ptr<CircleShape> c = make_shared<CircleShape>();
+    c.get()->setupShape(box2d, ofGetWidth()/2 - 300, ofGetHeight()/2-200, 120, &colors[colorNum0], &sound[1]);
+    circles.push_back(c);
+    ofRemove(circles, shouldRemove);
+    
+    shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+    t.get()->setupShape(box2d, ofGetWidth()/2, ofGetHeight()/2 - 200, 140, 3, &colors[colorNum1], &sound[0]);
+    triangles.push_back(t);
+    ofRemove(triangles, shouldRemove);
+    
+    shared_ptr<RectShape> r = make_shared<RectShape>();
+    r.get()->setupShape(box2d, ofGetWidth()/2 + 300, ofGetHeight()/2-200, 180, &colors[colorNum2], &sound[0]);
+    rects.push_back(r);
     ofRemove(rects, shouldRemove);
     sound[1].play();
 }
@@ -255,9 +240,9 @@ void BoundScene::sc03(){
     int colorNum1 = sNum[2];
     ofVec2f startPos;
     ofVec2f pos;
-    startPos.x = ofRandom(shapeMinArea.x+100,shapeMaxArea.x-100);
-    startPos.y = ofRandom(shapeMinArea.y,shapeMaxArea.y-300);
-    int tr = 32;
+    startPos.x = ofRandom(shapeMinArea.x+200, shapeMaxArea.x-200);
+    startPos.y = ofRandom(shapeMinArea.y, shapeMaxArea.y-300);
+    int tr = 36;
     int trm = tr*2;
     for (int i=0; i<5; i++) {
         shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
@@ -333,30 +318,39 @@ void BoundScene::sc04(){
 void BoundScene::sc05(){
     // ウェーブ -------------------------------------------
     shuffle<int>(sNum,6);
-    int colorNum, cRadius;
+    int colorNum0 = sNum[1];
+    int colorNum1 = sNum[2];
+    int colorNum2 = sNum[3];
     int r = 140;
     int theta = (int)ofRandom(0,60);
     ofVec2f pos;
     for (int i=0; i<40; i++) {
-        pos.x = i*36 - 8;
-        pos.y =  r * sin(ofDegToRad(theta+i*16)) + 200;
-        shared_ptr<CircleShape> c = make_shared<CircleShape>();
+        pos.x = i*64 - 8;
+        pos.y =  r * sin(ofDegToRad(theta+i*16)) + 240;
+        
         int cnt = 0;
         if(i % 3 == 0){
-            colorNum = sNum[1];
-            cRadius = 8;
+            colorNum0 = sNum[1];
+            shared_ptr<CircleShape> c = make_shared<CircleShape>();
+            c.get()->setupShape(box2d, pos.x, pos.y, 40, &colors[colorNum0], &sound[1]);
+            circles.push_back(c);
+            ofRemove(circles, shouldRemove);
+           
         } else if(i % 3 == 1){
-            colorNum = sNum[2];
-            cRadius = 12;
+            colorNum1 = sNum[2];
+            shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+            t.get()->setupShape(box2d, pos.x, pos.y, 50, 3, &colors[colorNum1], &sound[0]);
+            triangles.push_back(t);
+            ofRemove(triangles, shouldRemove);
         } else {
-            colorNum = sNum[3];
-            cRadius = 16;
+            colorNum2 = sNum[3];
+            shared_ptr<RectShape> r = make_shared<RectShape>();
+            r.get()->setupShape(box2d, pos.x,pos.y, 70, &colors[colorNum2], &sound[0]);
+            rects.push_back(r);
+            ofRemove(rects, shouldRemove);
         }
-        c.get()->setupShape(box2d, pos.x, pos.y, cRadius, &colors[colorNum], &sound[1]);
-        circles.push_back(c);
     }
-    ofRemove(circles, shouldRemove);
-    sound[6].play();
+    sound[4].play();
 }
 
 
@@ -448,58 +442,9 @@ void BoundScene::sc07(){
         t.get()->setupShape(box2d, pos4.x + pos.x/scale, pos1.y + pos.y/scale, 20, &colors[colorNum4], &sound[0]);
         circles.push_back(t);
     }
-    sound[7].play();
+    sound[6].play();
 }
 
-//--------------------------------------------------------------
-void BoundScene::sc08(){
-}
-
-//--------------------------------------------------------------
-void BoundScene::sc09(){
-    //    //三角旗-----------------------
-    //    shuffle<int>(sNum,6);
-    //    int colorNum0 = sNum[1];
-    //    int colorNum1 = sNum[2];
-    //    ofVec2f startPos;
-    //    ofVec2f pos;
-    //    startPos.x = ofRandom(shapeMinArea.x+100, shapeMaxArea.x-100);
-    //    startPos.y = ofRandom(shapeMinArea.y, shapeMaxArea.y);
-    //    int tr = 32;
-    //    int trm = tr*2.2;
-    //
-    //
-    //    for (int i=0; i<2; i++) {
-    //        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-    //        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 96, startPos.y - trm - 96, tr, 4, &colors[colorNum0], &sound[0]);
-    //        triangles.push_back(t);
-    //    }
-    //    for (int i=0; i<3; i++) {
-    //        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-    //        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 64, startPos.y - trm - 40, tr, 4, &colors[colorNum0], &sound[0]);
-    //        triangles.push_back(t);
-    //    }
-    //    for (int i=0; i<4; i++) {
-    //        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-    //        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 32, startPos.y - trm + 16, tr, 4, &colors[colorNum0], &sound[0]);
-    //        triangles.push_back(t);
-    //    }
-    //    for (int i=0; i<5; i++) {
-    //        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-    //        t.get()->setupShape(&box2d, startPos.x + trm * i, startPos.y, tr, 4, &colors[colorNum0], &sound[0]);
-    //        triangles.push_back(t);
-    //    }
-    //    for (int i=0; i<4; i++) {
-    //        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-    //        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 32, startPos.y + trm - 16, tr, 4, &colors[colorNum0], &sound[0]);
-    //        triangles.push_back(t);
-    //    }
-    //    for (int i=0; i<3; i++) {
-    //        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-    //        t.get()->setupShape(&box2d, (startPos.x + trm * i) + 64, startPos.y + trm + 40, tr, 4, &colors[colorNum0], &sound[0]);
-    //        triangles.push_back(t);
-    //    }
-}
 
 
 

@@ -6,7 +6,6 @@ void ofApp::setup(){
     
     ofSetWindowShape(1280, 800);
     
-    //フルスクリーン
 //    ofSetFullscreen(true);
     
     ofBackgroundHex(0xFFFFFF);
@@ -18,9 +17,9 @@ void ofApp::setup(){
  
     //Box2dの初期設定
     box2d.init();
-    box2d.setGravity(0, 18);
+    box2d.setGravity(0, 10);
     //    box2d.createBounds();
-    box2d.setFPS(60.0);
+    box2d.setFPS(30.0);
     box2d.registerGrabbing(); //本番では外す　オブジェクトを掴めるように
     
     //シーンクラスの生成

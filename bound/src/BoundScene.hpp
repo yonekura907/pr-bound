@@ -25,7 +25,7 @@
 #include "Ground.hpp"
 #include "ofxJSON.h"
 
-#define N_SOUNDS 9
+#define N_SOUNDS 7
 class SoundData {
 public:
     int  soundID;
@@ -53,9 +53,7 @@ public:
     void sc05();
     void sc06();
     void sc07();
-    void sc08();
-    void sc09();
-    void sc10();
+
     
     //JSON
     ofxJSONElement json;

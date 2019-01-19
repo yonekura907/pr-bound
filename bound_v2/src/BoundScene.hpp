@@ -17,7 +17,7 @@
 #include <numeric>
 #include <iterator>
 #include <random>
-#include<stdlib.h>
+
 #include "ofxBox2d.h"
 #include "RectShape.hpp"
 #include "CircleShape.hpp"
@@ -25,7 +25,7 @@
 #include "Ground.hpp"
 #include "ofxJSON.h"
 
-#define N_SOUNDS 9
+#define N_SOUNDS 7
 class SoundData {
 public:
     int  soundID;
@@ -39,11 +39,13 @@ public:
     void setup();
     void update();
     void draw();
-    
     void keyPressed(int key);
     
-    void setScene();
+    //    void setCircles();
+    //    void setRects();
+    //    void setTriangles();
     
+    void setScene();
     void sc01();
     void sc02();
     void sc03();
@@ -51,8 +53,7 @@ public:
     void sc05();
     void sc06();
     void sc07();
-    void sc08();
-    void sc09();
+    
     
     //JSON
     ofxJSONElement json;
@@ -76,8 +77,9 @@ public:
     ofColor *colors = new ofColor[6];
     int sNum[6]={0,1,2,3,4,5};
     
-    ofSoundPlayer  sound[N_SOUNDS];
-
+    //サウンド
+    ofSoundPlayer sound[N_SOUNDS];
+    
 };
 
 #endif /* BoundScene_hpp */

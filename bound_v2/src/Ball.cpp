@@ -8,7 +8,7 @@
 #include "Ball.hpp"
 
 void Ball::setupBall(int x, int y, ofxBox2d * world){
-    setPhysics(0, 0.7, 0.1);
+    setPhysics(0, 0.9, 0.1);
     setup(world->getWorld(), x, y, radius);
 }
 
@@ -21,14 +21,15 @@ void Ball::updateBall(float x, float y){
     setPosition(pos.x, pos.y);
     //Kinectバージョン　ここまで-----------------------
     
+    
     // Kinect無しバージョン ここから------------------------
     //ボールの現在座標
-//    pos.x = getPosition().x;
-//    pos.y = getPosition().y;
+    pos.x = getPosition().x;
+    pos.y = getPosition().y;
     
     //ボールの速度を保存
     velocity = getVelocity().y;
-    cout << "velocity" << velocity << endl;
+//    cout << "velocity" << velocity << endl;
     
     //速度を前回の状態と比較
     if(velocity != lastVelocity){
@@ -52,7 +53,7 @@ void Ball::updateBall(float x, float y){
             maxPosY = refPosY;
         }
     }
-    cout << "isBound" << isBound << endl;
+     cout << "isBound: " << isBound << endl;
     // Kinect無しバージョン ここまで ------------------
 }
 

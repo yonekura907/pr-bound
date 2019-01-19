@@ -12,9 +12,9 @@ Ground::Ground(ofxBox2d *world){
 }
 
 void Ground::setup(){
-    box2d->createGround(0, ofGetHeight()-1, ofGetWidth(), ofGetHeight()-1);
-    groundLine.addVertex(0, ofGetHeight());
-    groundLine.addVertex(ofGetWidth(), ofGetHeight());
+    box2d->createGround(200, ofGetHeight(), ofGetWidth()-200, ofGetHeight());
+    groundLine.addVertex(200, ofGetHeight());
+    groundLine.addVertex(ofGetWidth()-200, ofGetHeight());
 }
 
 void Ground::update(){

@@ -11,7 +11,7 @@ void RectShape::setupShape(ofxBox2d *world, float x, float y, float rectWidth, o
     pos.x = x;
     pos.y = y;
     selfWidth = rectWidth;
-    setPhysics(1.4, 0.8, 0.2);
+    setPhysics(1.4, 0.9, 0.2);
     setup(world->getWorld(), pos.x, pos.y, selfWidth, selfWidth);
     
     selfColor = col;

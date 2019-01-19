@@ -2,7 +2,9 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    
     ofSetWindowShape(1280, 800);
+    ofSetFullscreen(true);
     ofBackgroundHex(0xFFFFFF);
     ofSetVerticalSync(true);
     //    ofSetLogLevel(OF_LOG_NOTICE);
@@ -63,18 +65,19 @@ void ofApp::setup(){
     threshold = 100;
     
     //物体検出する面積の最小値、最大値
-    boundingAreaMin = 2000;
-    boundingAreaMax = 10000;
+    boundingAreaMin = 4000;
+    boundingAreaMax = 20000;
     
     //boundYの初期設定
     groundY = 1000;
-    thresholdGroundY = 20;
+    thresholdGroundY = 60;
     
     prePos = ofVec2f(0, 0);
     
     // boundをoff
     bound = false;
 }
+
 
 //--------------------------------------------------------------
 void ofApp::update(){
@@ -131,7 +134,9 @@ void ofApp::update(){
     }
     
     // ballPosの更新
-    ballPos = pos;
+    // depth 512, 424
+    ballPos.x = ofMap(pos.x, 0, 512, 0, ofGetWidth());
+    ballPos.y = ofMap(pos.y, 0, 424, 0, ofGetHeight());
     
     // ボールの落下
     for(auto & b : balls) {
@@ -143,16 +148,17 @@ void ofApp::update(){
         //        cout << "noteNum: " << noteNum << endl;
         //        cout << "accelerationCount: " << b->accelerationCount << endl;
         //ここはkinectでは消してください
-        if(b->accelerationCount >= 1){
+//        if(b->accelerationCount >= 1){
             //            msg.addIntArg(b->accelerationCount);
             // OSC送信
             //            sender.sendMessage(msg);
             //シェイプの落下 --------------------
             //シーンクラスのupdateここはkinectでも必要
+        if(bound){
             bScene->update();
-            //ボールの値をリセット
+        }    //ボールの値をリセット
 //            b.get()->reset(); //ここはkinectでは消してください
-        }
+//        }
     }
     box2d.update();
     
@@ -161,9 +167,11 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     //ボールの描画
-    for(auto & b : balls) {
-        b->display();
-    }
+//    if(boundingArea > boundingAreaMin && boundingArea < boundingAreaMax){
+        for(auto & b : balls) {
+            b->display();
+        }
+//    }
     
     //シーンクラスのdraw
     bScene->draw();

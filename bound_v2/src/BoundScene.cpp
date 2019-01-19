@@ -22,7 +22,7 @@ template<class T> void shuffle(T ary[],int size){
 
 //--------------------------------------------------------------
 BoundScene::BoundScene(ofxBox2d *world){
-//    cout << world << endl;
+    //    cout << world << endl;
     box2d = world;
 }
 
@@ -37,9 +37,9 @@ void BoundScene::setup(){
     colors[5].setHex(0x4264D7); //ブルー
     
     
-//    bgColor[0].setHex(0xEEEEEE);
-//    bgColor[1].setHex(0xE6F2FF);
-//    bgColor[2].setHex(0xFDEFC2);
+    //    bgColor[0].setHex(0xEEEEEE);
+    //    bgColor[1].setHex(0xE6F2FF);
+    //    bgColor[2].setHex(0xFDEFC2);
     
     // JSON読み込み ----------------------------
     string file = "dots.json";
@@ -51,13 +51,13 @@ void BoundScene::setup(){
     //Box2dの地面
     ground = make_unique<Ground>(box2d);
     ground->setup();
-
+    
     //シェイプの描画範囲
     shapeMinArea.x = 50;
     shapeMinArea.y = 50;
     shapeMaxArea.x = ofGetWidth()-50;
     shapeMaxArea.y = ofGetHeight()/2;
-
+    
     // サウンドファイルの読み込み
     for(int i=0; i<N_SOUNDS; i++) {
         sound[i].load("sfx/"+ofToString(i)+".mp3");
@@ -95,20 +95,21 @@ void BoundScene::keyPressed(int key){
         triangles.clear();
         rects.clear();
     }
-//    if(key == 't') {
-//        
-//    }
-//    if(key == 'r') {
-//        
-//    }
+    //    if(key == 't') {
+    //
+    //    }
+    //    if(key == 'r') {
+    //
+    //    }
 }
 
 
 //--------------------------------------------------------------
 void BoundScene::setScene(){
-//    sc07();
+    //    sc07();
     //シーンをランダムで選ぶ
-    scene = (int)ofRandom(1,8);
+    scene = (int)ofRandom(0,8);
+//    scene = 7;
     cout << "scnen" << scene << endl;
     switch (scene) {
         case 1:
@@ -242,7 +243,7 @@ void BoundScene::sc02(){
     r7.get()->setupShape(box2d, ofGetWidth()/2 + splitNum*3, 50, 200, &colors[colorNum0], &sound[0]);
     rects.push_back(r7);
     ofRemove(rects, shouldRemove);
-    sound[7].play();
+    sound[1].play();
 }
 
 
@@ -284,7 +285,7 @@ void BoundScene::sc03(){
         triangles.push_back(t);
     }
     ofRemove(triangles, shouldRemove);
-    sound[8].play();
+    sound[2].play();
 }
 
 
@@ -355,7 +356,7 @@ void BoundScene::sc05(){
         circles.push_back(c);
     }
     ofRemove(circles, shouldRemove);
-    sound[4].play();
+    sound[6].play();
 }
 
 
@@ -447,7 +448,7 @@ void BoundScene::sc07(){
         t.get()->setupShape(box2d, pos4.x + pos.x/scale, pos1.y + pos.y/scale, 20, &colors[colorNum4], &sound[0]);
         circles.push_back(t);
     }
-    sound[6].play();
+    sound[7].play();
 }
 
 //--------------------------------------------------------------

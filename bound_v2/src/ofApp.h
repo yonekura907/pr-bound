@@ -34,6 +34,7 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
+    void windowResized();
     
     // ------------------------------------------
     ofxPanel panel;
@@ -58,6 +59,9 @@ public:
     int threshold;
     
     ofVec2f displaySize;
+    
+   
+    
     
     // 物体検出の面積
     float boundingArea;

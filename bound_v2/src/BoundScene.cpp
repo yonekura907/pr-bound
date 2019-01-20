@@ -69,7 +69,7 @@ void BoundScene::setup(){
 //--------------------------------------------------------------
 void BoundScene::update(){
     //シェイプの落下
-    setScene();
+//    setScene();
     
 }
 
@@ -107,34 +107,39 @@ void BoundScene::keyPressed(int key){
 
 //--------------------------------------------------------------
 void BoundScene::setScene(){
-    //シーンをランダムで選ぶ
-    scene = (int)ofRandom(1,8);
-    //    scene = 3;
-    cout << "scnen" << scene << endl;
-    switch (scene) {
-        case 1:
-            sc01();
-            break;
-        case 2:
-            sc02();
-            break;
-        case 3:
-            sc03();
-            break;
-        case 4:
-            sc04();
-            break;
-        case 5:
-            sc05();
-            break;
-        case 6:
-            sc06();
-            break;
-        case 7:
-            sc07();
-            break;
-        default:
-            break;
+    
+    if(ofGetFrameNum() % 3 == 0){
+        
+        //シーンをランダムで選ぶ
+        scene = (int)ofRandom(1,8);
+        //    scene = 3;
+        cout << "scnen" << scene << endl;
+        switch (scene) {
+            case 1:
+                sc01();
+                break;
+            case 2:
+                sc02();
+                break;
+            case 3:
+                sc03();
+                break;
+            case 4:
+                sc04();
+                break;
+            case 5:
+                sc05();
+                break;
+            case 6:
+                sc06();
+                break;
+            case 7:
+                sc07();
+                break;
+            default:
+                break;
+        }
+        
     }
 }
 

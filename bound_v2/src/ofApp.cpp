@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    ofSetFrameRate(30);
     ofSetWindowShape(1280, 800);
     ofSetFullscreen(true);
     ofBackgroundHex(0xFFFFFF);
@@ -16,7 +17,7 @@ void ofApp::setup(){
     box2d.init();
     box2d.setGravity(0, 9.8);
     //    box2d.createBounds();
-    box2d.setFPS(60.0);
+    box2d.setFPS(30.0);
     box2d.registerGrabbing(); //本番では外す　オブジェクトを掴めるように
     
     //シーンクラスの生成
@@ -155,10 +156,11 @@ void ofApp::update(){
             //シェイプの落下 --------------------
             //シーンクラスのupdateここはkinectでも必要
         if(bound){
-            bScene->update();
+            bScene->setScene();
         }    //ボールの値をリセット
 //            b.get()->reset(); //ここはkinectでは消してください
 //        }
+        bScene->update();
     }
     box2d.update();
     
@@ -185,9 +187,9 @@ void ofApp::draw(){
 //    //    //背景画像と現在の画像との差分を表示
 //    grayDiff.draw(displaySize.x + 20,displaySize.y + 20, displaySize.x, displaySize.y);
     //抽出した輪郭線の情報を描画する
-    if(boundingArea > boundingAreaMin && boundingArea < boundingAreaMax){
-        contourFinder.draw(0, 0, displaySize.x, displaySize.y);
-    }
+//    if(boundingArea > boundingAreaMin && boundingArea < boundingAreaMax){
+//        contourFinder.draw(0, 0, displaySize.x, displaySize.y);
+//    }
     
     // finally, a report:
     ofSetHexColor(0xffffff);

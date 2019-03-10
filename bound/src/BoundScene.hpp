@@ -17,13 +17,16 @@
 #include <numeric>
 #include <iterator>
 #include <random>
-
+#include "ofxOsc.h"
 #include "ofxBox2d.h"
 #include "RectShape.hpp"
 #include "CircleShape.hpp"
 #include "TrianglePolyShape.hpp"
 #include "Ground.hpp"
 #include "ofxJSON.h"
+//#define SEND_PORT 7400
+//#define RECEIVE_PORT 7100
+//#define HOST "127.0.0.1"
 
 #define N_SOUNDS 7
 class SoundData {
@@ -35,7 +38,7 @@ public:
 class BoundScene {
 public:
     
-    BoundScene(ofxBox2d *world);
+    BoundScene(ofxBox2d *world, ofxOscSender *sender);
     void setup();
     void update();
     void draw();
@@ -53,6 +56,9 @@ public:
     void sc05();
     void sc06();
     void sc07();
+    
+    // OSC送信
+    void sendOscMessage(int);
 
     
     //JSON
@@ -60,6 +66,9 @@ public:
     
     //box2d
     ofxBox2d *box2d;
+    
+    //OSC
+    ofxOscSender *oscSender;
     
     //地面
     unique_ptr<Ground> ground;

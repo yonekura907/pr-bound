@@ -17,7 +17,7 @@
 #include <numeric>
 #include <iterator>
 #include <random>
-
+#include "ofxOsc.h"
 #include "ofxBox2d.h"
 #include "RectShape.hpp"
 #include "CircleShape.hpp"
@@ -35,7 +35,7 @@ public:
 class BoundScene {
 public:
     
-    BoundScene(ofxBox2d *world);
+    BoundScene(ofxBox2d *world, ofxOscSender *sender);
     void setup();
     void update();
     void draw();
@@ -54,12 +54,18 @@ public:
     void sc06();
     void sc07();
     
+    // OSC
+    void sendOscMessage(int);
+    
     
     //JSON
     ofxJSONElement json;
     
     //box2d
     ofxBox2d *box2d;
+    
+    //OSC
+    ofxOscSender *oscSender;
     
     //地面
     unique_ptr<Ground> ground;

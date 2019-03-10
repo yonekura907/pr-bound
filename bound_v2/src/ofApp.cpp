@@ -21,7 +21,7 @@ void ofApp::setup(){
     box2d.registerGrabbing(); //本番では外す　オブジェクトを掴めるように
     
     //シーンクラスの生成
-    bScene = make_unique<BoundScene>(&box2d);
+    bScene = make_unique<BoundScene>(&box2d, &sender);
     bScene->setup();
     
     //ボールの生成

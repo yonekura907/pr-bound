@@ -21,9 +21,9 @@ template<class T> void shuffle(T ary[],int size){
 }
 
 //--------------------------------------------------------------
-BoundScene::BoundScene(ofxBox2d *world){
-    //    cout << world << endl;
+BoundScene::BoundScene(ofxBox2d *world, ofxOscSender *sender){
     box2d = world;
+    oscSender = sender;
 }
 
 //--------------------------------------------------------------
@@ -48,6 +48,9 @@ void BoundScene::setup(){
         cout << "Failed to parse JSON" << endl;
     }
     
+    // OSC設定
+//    oscSender->setup(*oscHost,oscPort);
+    
     //Box2dの地面
     ground = make_unique<Ground>(box2d);
     ground->setup();
@@ -70,7 +73,6 @@ void BoundScene::setup(){
 void BoundScene::update(){
     //シェイプの落下
     setScene();
-
 }
 
 //--------------------------------------------------------------
@@ -89,7 +91,7 @@ void BoundScene::draw(){
     ground->draw();
 }
 
-
+//--------------------------------------------------------------
 void BoundScene::keyPressed(int key){
     if(key == 'c') {
         circles.clear();
@@ -104,13 +106,22 @@ void BoundScene::keyPressed(int key){
     //    }
 }
 
+//--------------------------------------------------------------
+void BoundScene::sendOscMessage(int sceneNumber){
+    ofxOscMessage msg;
+    msg.setAddress("/bound");
+    msg.addIntArg(sceneNumber);
+    oscSender->sendMessage(msg);
+    
+};
 
 //--------------------------------------------------------------
 void BoundScene::setScene(){
     //シーンをランダムで選ぶ
     scene = (int)ofRandom(1,8);
-//    scene = 3;
-    cout << "scnen" << scene << endl;
+//    scene = 1;
+//    cout << "scnen" << scene << endl;
+    
     switch (scene) {
         case 1:
             sc01();
@@ -203,7 +214,13 @@ void BoundScene::sc01(){
         t.get()->setupShape(box2d, pos4.x + pos.x/2, pos1.y + pos.y/2, 24, 5, &colors[colorNum4], &sound[0]);
         triangles.push_back(t);
     }
-    sound[0].play();
+    
+    
+    // OSC送信
+    sendOscMessage(1);
+    // Maxが鳴らない用
+    // sound[0].play();
+    
 }
 
 
@@ -228,7 +245,12 @@ void BoundScene::sc02(){
     r.get()->setupShape(box2d, ofGetWidth()/2 + 300, ofGetHeight()/2-200, 180, &colors[colorNum2], &sound[0]);
     rects.push_back(r);
     ofRemove(rects, shouldRemove);
-    sound[1].play();
+    
+    
+    // OSC送信
+    sendOscMessage(2);
+    // Maxが鳴らない用
+    // sound[1].play();
 }
 
 
@@ -270,7 +292,11 @@ void BoundScene::sc03(){
         triangles.push_back(t);
     }
     ofRemove(triangles, shouldRemove);
-    sound[2].play();
+    
+    // OSC送信
+    sendOscMessage(3);
+    // Maxが鳴らない用
+    // sound[2].play();
 }
 
 
@@ -310,7 +336,11 @@ void BoundScene::sc04(){
         circles.push_back(c);
     }
     ofRemove(circles, shouldRemove);
-    sound[3].play();
+    
+    // OSC送信
+    sendOscMessage(4);
+    // Maxが鳴らない用
+    // sound[3].play();
 }
 
 
@@ -350,7 +380,11 @@ void BoundScene::sc05(){
             ofRemove(rects, shouldRemove);
         }
     }
-    sound[4].play();
+    
+    // OSC送信
+    sendOscMessage(5);
+    // Maxが鳴らない用
+    // sound[4].play();
 }
 
 
@@ -371,7 +405,11 @@ void BoundScene::sc06(){
     t3.get()->setupShape(box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(150,300), 5, &colors[colorNum2], &sound[0]);
     triangles.push_back(t3);
     ofRemove(triangles, shouldRemove);
-    sound[5].play();
+    
+    // OSC送信
+    sendOscMessage(6);
+    // Maxが鳴らない用
+    // sound[5].play();
 }
 
 
@@ -442,7 +480,11 @@ void BoundScene::sc07(){
         t.get()->setupShape(box2d, pos4.x + pos.x/scale, pos1.y + pos.y/scale, 20, &colors[colorNum4], &sound[0]);
         circles.push_back(t);
     }
-    sound[6].play();
+    
+    // OSC送信
+    sendOscMessage(7);
+    // Maxが鳴らない用
+    // sound[7].play();
 }
 
 

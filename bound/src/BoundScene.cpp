@@ -98,12 +98,27 @@ void BoundScene::keyPressed(int key){
         triangles.clear();
         rects.clear();
     }
-    //    if(key == 't') {
-    //
-    //    }
-    //    if(key == 'r') {
-    //
-    //    }
+    if(key == '1') {
+        sc01();
+    }
+    if(key == '2') {
+        sc02();
+    }
+    if(key == '3') {
+        sc03();
+    }
+    if(key == '4') {
+        sc04();
+    }
+    if(key == '5') {
+        sc05();
+    }
+    if(key == '6') {
+        sc06();
+    }
+    if(key == '7') {
+        sc07();
+    }
 }
 
 //--------------------------------------------------------------
@@ -112,7 +127,6 @@ void BoundScene::sendOscMessage(int sceneNumber){
     msg.setAddress("/bound");
     msg.addIntArg(sceneNumber);
     oscSender->sendMessage(msg);
-    
 };
 
 //--------------------------------------------------------------
@@ -121,6 +135,7 @@ void BoundScene::setScene(){
     scene = (int)ofRandom(1,8);
 //    scene = 1;
 //    cout << "scnen" << scene << endl;
+    
     
     switch (scene) {
         case 1:
@@ -160,20 +175,34 @@ void BoundScene::sc01(){
     int colorNum2 = sNum[2];
     int colorNum3 = sNum[3];
     int colorNum4 = sNum[4];
-    ofVec2f pos0;
-    pos0.set(0,50);
+    
     int h = 7;
+    int e = 4;
+    int l = 11;
+    int o = 14;
+    
+    int scale = 2;
+    int radius = 18;
+    int startY = -200;
+    
+//    int helloCount[] = {7,4,11,11,14};
+    
+    int helloWidth = (json["alphabets"][h]["width"].asInt() + json["alphabets"][e]["width"].asInt() + json["alphabets"][l]["width"].asInt() + json["alphabets"][l]["width"].asInt() + json["alphabets"][o]["width"].asInt())/2 - 80;
+    
+    
+    ofVec2f pos0;
+    pos0.set(ofGetWidth()/2 - (helloWidth/2),startY);
+    
     for (int i=0; i<json["alphabets"][h]["pos"].size(); i++) {
-        shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
+        shared_ptr<CircleShape> c = make_shared<CircleShape>();
         ofVec2f pos;
         pos.x = json["alphabets"][h]["pos"][i]["x"].asInt();
         pos.y = json["alphabets"][h]["pos"][i]["y"].asInt();
-        t.get()->setupShape(box2d, pos0.x + pos.x/2, pos0.y + pos.y/2, 24, 5, &colors[colorNum0], &sound[0]);
-        triangles.push_back(t);
+        c.get()->setupShape(box2d, pos0.x + pos.x/scale, pos0.y + pos.y/scale, radius, &colors[colorNum0], &sound[0]);
+        circles.push_back(c);
     }
     ofVec2f pos1;
-    pos1.set(pos0.x + json["alphabets"][h]["width"].asInt()/2-30,50);
-    int e = 4;
+    pos1.set(pos0.x + json["alphabets"][h]["width"].asInt()/2-10,pos0.y);
     for (int i=0; i<json["alphabets"][e]["pos"].size(); i++) {
         shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
         ofVec2f pos;
@@ -183,8 +212,7 @@ void BoundScene::sc01(){
         triangles.push_back(t);
     }
     ofVec2f pos2;
-    pos2.set(pos1.x + json["alphabets"][e]["width"].asInt()/2-30,50);
-    int l = 11;
+    pos2.set(pos1.x + json["alphabets"][e]["width"].asInt()/2-30,pos0.y);
     for (int i=0; i<json["alphabets"][l]["pos"].size(); i++) {
         shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
         ofVec2f pos;
@@ -194,7 +222,7 @@ void BoundScene::sc01(){
         triangles.push_back(t);
     }
     ofVec2f pos3;
-    pos3.set(pos2.x + json["alphabets"][l]["width"].asInt()/2-30,50);
+    pos3.set(pos2.x + json["alphabets"][l]["width"].asInt()/2-10,pos0.y);
     for (int i=0; i<json["alphabets"][l]["pos"].size(); i++) {
         shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
         ofVec2f pos;
@@ -204,8 +232,7 @@ void BoundScene::sc01(){
         triangles.push_back(t);
     }
     ofVec2f pos4;
-    pos4.set(pos3.x + json["alphabets"][l]["width"].asInt()/2-30,50);
-    int o = 14;
+    pos4.set(pos3.x + json["alphabets"][l]["width"].asInt()/2-30,pos0.y);
     for (int i=0; i<json["alphabets"][o]["pos"].size(); i++) {
         shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
         ofVec2f pos;
@@ -214,8 +241,6 @@ void BoundScene::sc01(){
         t.get()->setupShape(box2d, pos4.x + pos.x/2, pos1.y + pos.y/2, 24, 5, &colors[colorNum4], &sound[0]);
         triangles.push_back(t);
     }
-    
-    
     // OSC送信
     sendOscMessage(1);
     // Maxが鳴らない用
@@ -231,18 +256,21 @@ void BoundScene::sc02(){
     int colorNum0 = sNum[1];
     int colorNum1 = sNum[2];
     int colorNum2 = sNum[3];
+    
+    int startY = -100;
+    
     shared_ptr<CircleShape> c = make_shared<CircleShape>();
-    c.get()->setupShape(box2d, ofGetWidth()/2 - 300, ofGetHeight()/2-200, 120, &colors[colorNum0], &sound[1]);
+    c.get()->setupShape(box2d, ofGetWidth()/2 - 400, startY, 160, &colors[colorNum0], &sound[1]);
     circles.push_back(c);
     ofRemove(circles, shouldRemove);
     
     shared_ptr<TrianglePolyShape> t = make_shared<TrianglePolyShape>();
-    t.get()->setupShape(box2d, ofGetWidth()/2, ofGetHeight()/2 - 200, 140, 3, &colors[colorNum1], &sound[0]);
+    t.get()->setupShape(box2d, ofGetWidth()/2, startY, 200, 3, &colors[colorNum1], &sound[0]);
     triangles.push_back(t);
     ofRemove(triangles, shouldRemove);
     
     shared_ptr<RectShape> r = make_shared<RectShape>();
-    r.get()->setupShape(box2d, ofGetWidth()/2 + 300, ofGetHeight()/2-200, 180, &colors[colorNum2], &sound[0]);
+    r.get()->setupShape(box2d, ofGetWidth()/2 + 400, startY, 300, &colors[colorNum2], &sound[0]);
     rects.push_back(r);
     ofRemove(rects, shouldRemove);
     
@@ -263,7 +291,7 @@ void BoundScene::sc03(){
     ofVec2f startPos;
     ofVec2f pos;
     startPos.x = ofRandom(shapeMinArea.x+200, shapeMaxArea.x-200);
-    startPos.y = ofRandom(shapeMinArea.y, shapeMaxArea.y-300);
+    startPos.y = ofRandom(shapeMinArea.y-100, shapeMaxArea.y-400);
     int tr = 36;
     int trm = tr*2;
     for (int i=0; i<5; i++) {
@@ -313,7 +341,7 @@ void BoundScene::sc04(){
     ofVec2f startPos;
     ofVec2f pos;
     startPos.x = ofRandom(shapeMinArea.x+100,shapeMaxArea.x-100);
-    startPos.y = ofRandom(shapeMinArea.y+100,shapeMaxArea.y-100);
+    startPos.y = ofRandom(shapeMinArea.y-100,shapeMaxArea.y-300);
     for (int i=0; i<24; i++) {
         pos.x = startPos.x + r1 * cos(ofDegToRad(i*15));
         pos.y = startPos.y + r1 * sin(ofDegToRad(i*15));
@@ -356,7 +384,7 @@ void BoundScene::sc05(){
     ofVec2f pos;
     for (int i=0; i<40; i++) {
         pos.x = i*64 - 8;
-        pos.y =  r * sin(ofDegToRad(theta+i*16)) + 240;
+        pos.y =  r * sin(ofDegToRad(theta+i*16)) + 140;
         
         int cnt = 0;
         if(i % 3 == 0){
@@ -395,14 +423,17 @@ void BoundScene::sc06(){
     int colorNum0 = sNum[1];
     int colorNum1 = sNum[2];
     int colorNum2 = sNum[3];
+    
+    int startY = -100;
+    
     shared_ptr<TrianglePolyShape> t1 = make_shared<TrianglePolyShape>();
-    t1.get()->setupShape(box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(150,300), 4, &colors[colorNum0], &sound[0]);
+    t1.get()->setupShape(box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y)-startY, ofRandom(150,300), 4, &colors[colorNum0], &sound[0]);
     triangles.push_back(t1);
     shared_ptr<TrianglePolyShape> t2 = make_shared<TrianglePolyShape>();
-    t2.get()->setupShape(box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(150,300), 3, &colors[colorNum1], &sound[0]);
+    t2.get()->setupShape(box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y)-startY, ofRandom(150,300), 3, &colors[colorNum1], &sound[0]);
     triangles.push_back(t2);
     shared_ptr<TrianglePolyShape> t3 = make_shared<TrianglePolyShape>();
-    t3.get()->setupShape(box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y), ofRandom(150,300), 5, &colors[colorNum2], &sound[0]);
+    t3.get()->setupShape(box2d, ofRandom(shapeMinArea.x,shapeMaxArea.x), ofRandom(shapeMinArea.y,shapeMaxArea.y)-startY, ofRandom(150,300), 5, &colors[colorNum2], &sound[0]);
     triangles.push_back(t3);
     ofRemove(triangles, shouldRemove);
     
@@ -425,8 +456,9 @@ void BoundScene::sc07(){
     int scale = 2.8;
     int kerning = 50;
     int radius = 18;
+    int startY = -200;
     ofVec2f pos0;
-    pos0.set(ofGetWidth()/2 - 640,40);
+    pos0.set(ofGetWidth()/2 - 640,startY);
     int b = 1;
     for (int i=0; i<json["alphabets"][b]["pos"].size(); i++) {
         shared_ptr<CircleShape> t = make_shared<CircleShape>();

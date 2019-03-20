@@ -72,7 +72,7 @@ void BoundScene::setup(){
 //--------------------------------------------------------------
 void BoundScene::update(){
     //シェイプの落下
-    setScene();
+//    setScene();
 }
 
 //--------------------------------------------------------------
@@ -183,7 +183,7 @@ void BoundScene::sc01(){
     
     int scale = 2;
     int radius = 18;
-    int startY = -200;
+    int startY = 100;
     
     //    int helloCount[] = {7,4,11,11,14};
     
@@ -456,7 +456,7 @@ void BoundScene::sc07(){
     int scale = 2.8;
     int kerning = 50;
     int radius = 18;
-    int startY = -200;
+    int startY = 100;
     ofVec2f pos0;
     pos0.set(ofGetWidth()/2 - 640,startY);
     int b = 1;

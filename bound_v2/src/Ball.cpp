@@ -53,7 +53,7 @@ void Ball::updateBall(float x, float y){
             maxPosY = refPosY;
         }
     }
-     cout << "isBound: " << isBound << endl;
+//     cout << "isBound: " << isBound << endl;
     // Kinect無しバージョン ここまで ------------------
 }
 

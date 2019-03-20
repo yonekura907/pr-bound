@@ -4,8 +4,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
-    ofSetWindowShape(1800, 900);
-    
+//    ofSetWindowShape(1280, 900);
 //    ofSetFullscreen(true);
     
     ofBackgroundHex(0xFFFFFF);

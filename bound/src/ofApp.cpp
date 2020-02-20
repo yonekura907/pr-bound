@@ -4,7 +4,8 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
-//    ofSetWindowShape(1280, 900);
+    ofSetFrameRate(30);
+    ofSetWindowShape(1280, 900);
 //    ofSetFullscreen(true);
     
     ofBackgroundHex(0xFFFFFF);
@@ -16,7 +17,7 @@ void ofApp::setup(){
  
     //Box2dの初期設定
     box2d.init();
-    box2d.setGravity(0, 10);
+    box2d.setGravity(0, 9.8);
     //    box2d.createBounds();
     box2d.setFPS(30.0);
     box2d.registerGrabbing(); //本番では外す　オブジェクトを掴めるように
@@ -86,6 +87,15 @@ void ofApp::keyPressed(int key){
     }
     // Cを押すとシェイプがクリア
     bScene->keyPressed(key);
+    
+    // Mを押すとカーソルを非表示に
+    if(key == 'h') {
+        ofHideCursor();
+    }
+    // Sを押すとカーソルを表示に
+    if(key == 's') {
+        ofHideCursor();
+    }
 }
 
 

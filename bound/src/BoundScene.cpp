@@ -7,11 +7,14 @@
 
 #include "BoundScene.hpp"
 
+
 static bool shouldRemove(shared_ptr<ofxBox2dBaseShape>shape) {
     return !ofRectangle(0, -400, ofGetWidth(), ofGetHeight()+400).inside(shape->getPosition());
 }
 
+
 template<class T> void shuffle(T ary[],int size){
+    //配列をシャッフルさせる
     for(int i=0;i<size;i++){
         int j = rand()%size;
         T t = ary[i];
@@ -19,6 +22,7 @@ template<class T> void shuffle(T ary[],int size){
         ary[j] = t;
     }
 }
+
 
 //--------------------------------------------------------------
 BoundScene::BoundScene(ofxBox2d *world, ofxOscSender *sender){
@@ -47,9 +51,6 @@ void BoundScene::setup(){
     if (!success){
         cout << "Failed to parse JSON" << endl;
     }
-    
-    // OSC設定
-//    oscSender->setup(*oscHost,oscPort);
     
     //Box2dの地面
     ground = make_unique<Ground>(box2d);
@@ -123,6 +124,7 @@ void BoundScene::keyPressed(int key){
 
 //--------------------------------------------------------------
 void BoundScene::sendOscMessage(int sceneNumber){
+    // OSCの設定
     ofxOscMessage msg;
     msg.setAddress("/bound");
     msg.addIntArg(sceneNumber);

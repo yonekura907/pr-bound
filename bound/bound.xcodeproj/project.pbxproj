@@ -1165,20 +1165,20 @@
 			isa = PBXGroup;
 			children = (
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
-				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
+				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
 				F8FF2ACAE7AE4BDC97D2C92C /* Ball.hpp */,
 				8BB0CB3B08106D2E318F33E0 /* Ball.cpp */,
 				62C903CD0B3EA9BCA5AAF111 /* BoundScene.hpp */,
 				5D76DC1BE4E3C649B9AB59E5 /* BoundScene.cpp */,
+				7EB889EE857363399FD071EE /* RectShape.hpp */,
 				F39575046E7B7E82D2BCED4E /* CircleShape.hpp */,
+				ED052FE64523297008A28561 /* TrianglePolyShape.cpp */,
+				435A682766035F9C1A15B0B5 /* Ground.cpp */,
 				81B7C790EAFD705D1CFBB78A /* CircleShape.cpp */,
 				AB6986DCED631468B948AC59 /* TrianglePolyShape.hpp */,
-				ED052FE64523297008A28561 /* TrianglePolyShape.cpp */,
-				7EB889EE857363399FD071EE /* RectShape.hpp */,
-				8B440FCFDD23CCB49D5F228C /* RectShape.cpp */,
 				70A50B4B6B4F7CA6D4BBA74A /* Ground.hpp */,
-				435A682766035F9C1A15B0B5 /* Ground.cpp */,
+				8B440FCFDD23CCB49D5F228C /* RectShape.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;

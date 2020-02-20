@@ -14,8 +14,8 @@ void Ball::setupBall(int x, int y, ofxBox2d * world){
 
 void Ball::updateBall(float x, float y){
     //Kinectバージョン ここから----------------------
-    pos.x = x;
-    pos.y = y;
+//    pos.x = x;
+//    pos.y = y;
     
     // Kinectの値をBox2dのボールに与える
 //    setPosition(pos.x, pos.y);

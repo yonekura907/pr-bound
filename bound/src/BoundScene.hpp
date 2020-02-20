@@ -24,9 +24,6 @@
 #include "TrianglePolyShape.hpp"
 #include "Ground.hpp"
 #include "ofxJSON.h"
-//#define SEND_PORT 7400
-//#define RECEIVE_PORT 7100
-//#define HOST "127.0.0.1"
 
 #define N_SOUNDS 7
 class SoundData {
@@ -34,6 +31,7 @@ public:
     int  soundID;
     bool bHit;
 };
+
 
 class BoundScene {
 public:
@@ -43,10 +41,6 @@ public:
     void update();
     void draw();
     void keyPressed(int key);
-    
-//    void setCircles();
-//    void setRects();
-//    void setTriangles();
     
     void setScene();
     void sc01();
@@ -60,7 +54,6 @@ public:
     // OSC送信
     void sendOscMessage(int);
 
-    
     //JSON
     ofxJSONElement json;
     
